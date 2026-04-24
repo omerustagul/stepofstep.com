@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SKU Foundry | iOS 26 Orange Glass Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#fff7ed',
+                100: '#ffedd5',
+                200: '#fed7aa',
+                300: '#fdba74',
+                400: '#fb923c',
+                500: '#f97316', // Ana Turuncu
+                600: '#ea580c',
+                700: '#c2410c',
+                800: '#9a3412',
+                900: '#7c2d12',
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'SF Pro Display', '-apple-system', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out',
+              'slide-up': 'slideUp 0.5s ease-out',
+              'float': 'float 6s ease-in-out infinite',
+            },
+            keyframes: {
+              fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+              slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-20px)' }
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --glass-bg: rgba(255, 255, 255, 0.25);
+        --glass-border: rgba(255, 255, 255, 0.4);
+        --text-main: #ffffff;
+        --text-dark: #1d1d1f;
+      }
+      body {
+        background-color: #f97316; /* Canlı Turuncu Arka Plan */
+        color: var(--text-main);
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+        height: 100vh;
+      }
+      .ios-glass {
+        background: var(--glass-bg);
+        backdrop-filter: blur(50px) saturate(200%);
+        -webkit-backdrop-filter: blur(50px) saturate(200%);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+      }
+      .ios-glass-solid {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 1);
+        color: var(--text-dark);
+      }
+      .mesh-bg {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-color: #f97316;
+        background-image: 
+          radial-gradient(at 0% 0%, rgba(251, 146, 60, 0.8) 0px, transparent 50%),
+          radial-gradient(at 100% 0%, rgba(234, 88, 12, 0.6) 0px, transparent 50%),
+          radial-gradient(at 50% 100%, rgba(255, 255, 255, 0.2) 0px, transparent 70%);
+      }
+      .white-glow {
+        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
+      }
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+      
+      .ios-card {
+        transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .ios-card:hover {
+        transform: translateY(-4px);
+        background: rgba(255, 255, 255, 0.35);
+        border-color: rgba(255, 255, 255, 0.6);
+      }
+      
+      /* Yazıların turuncu zemin üzerinde daha iyi okunması için */
+      .text-shadow-sm {
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      }
+    </style>
+
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.553.0"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/apps/sos-foundry/assets/index-DmYsif0k.js"></script>
+</head>
+  <body>
+    <div class="mesh-bg"></div>
+    <div id="root"></div>
+</body>
+</html>

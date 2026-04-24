@@ -1,0 +1,20 @@
+[
+  {
+    "id": "sos-brand-architect",
+    "name": "Sos Brand Architect",
+    "path": "/apps/sos-brand-architect/",
+    "icon": "Box"
+  },
+  {
+    "id": "sos-foundry",
+    "name": "Sos Foundry",
+    "path": "/apps/sos-foundry/",
+    "icon": "Box"
+  },
+  {
+    "id": "sos-social-mind",
+    "name": "Sos Social Mind",
+    "path": "/apps/sos-social-mind/",
+    "icon": "Box"
+  }
+]

@@ -1,0 +1,164 @@
+{
+    "nav": {
+        "home": "Home",
+        "services": "Services",
+        "portfolio": "Portfolio",
+        "app_panel": "App Panel",
+        "get_started": "Get Started",
+        "dashboard": "Dashboard",
+        "settings": "Settings",
+        "login": "Login",
+        "logout": "Log Out",
+        "overview": "Overview",
+        "product_gen": "Product Generator",
+        "logo_gen": "Logo Creator",
+        "brand_architect": "Brand Architect",
+        "foundry": "The Foundry",
+        "social_mind": "Social Mind"
+    },
+    "hero": {
+        "title": "We Build Your Digital",
+        "highlight": "Future",
+        "subtitle": "Step of Step is a next-generation digital agency transforming brands with AI-driven creativity and cutting-edge development.",
+        "cta": "Start Digital Transformation",
+        "references": "Our References"
+    },
+    "services": {
+        "title": "Our Services",
+        "brand_identity": "Brand Identity",
+        "brand_desc": "Logo design, visual systems, and brand guidelines that make a mark.",
+        "social_media": "Social Media",
+        "social_desc": "Strategic content management and viral campaigns for maximum reach.",
+        "digital_marketing": "Digital Marketing",
+        "marketing_desc": "Data-driven performance marketing to scale your business.",
+        "web_dev": "Web Development",
+        "web_desc": "High-performance websites and apps acting as your digital HQ."
+    },
+    "portfolio": {
+        "title": "Portfolio",
+        "heading": "Selected Work",
+        "description": "Explore our latest projects where we combined strategy, design, and technology to deliver exceptional results.",
+        "filter_all": "All",
+        "filter_branding": "Branding",
+        "filter_web": "Web",
+        "filter_marketing": "Marketing"
+    },
+    "contact": {
+        "heading": "Let's build something",
+        "highlight": "extraordinary.",
+        "description": "Ready to take your brand to the next level? We are here to help you navigate the digital landscape.",
+        "send_msg": "Send a Message",
+        "name": "Name",
+        "surname": "Surname",
+        "phone": "Phone Number",
+        "email": "Email Address",
+        "message": "Message",
+        "submit": "Send Message"
+    },
+    "auth": {
+        "welcome_back": "Welcome Back",
+        "login_desc": "Enter your credentials to access your account.",
+        "register": "Create Account",
+        "register_desc": "Join Step of Step and unlock premium tools.",
+        "email_placeholder": "name@example.com",
+        "password": "Password",
+        "no_account": "Don't have an account?",
+        "has_account": "Already have an account?",
+        "signup": "Sign up",
+        "signin": "Sign in"
+    },
+    "dashboard": {
+        "welcome": "Welcome Back,",
+        "active_projects": "Active Projects",
+        "total_views": "Total Views",
+        "new_leads": "New Leads",
+        "recent_activity": "Recent Activity",
+        "view_all": "View All",
+        "back_to_site": "Back to Website",
+        "upgrade_plan": "Upgrade Plan"
+    },
+    "footer": {
+        "desc": "We are a digital agency that believes in the power of technology and design to transform businesses.",
+        "company": "Company",
+        "portal": "Portal",
+        "about": "About Us",
+        "careers": "Careers",
+        "contact": "Contact",
+        "services": "Services",
+        "branding": "Branding",
+        "development": "Development",
+        "marketing": "Marketing",
+        "legal": "Legal",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "rights": "All rights reserved."
+    },
+    "profile": {
+        "title": "My Profile",
+        "personal_info": "Personal Information",
+        "plan_details": "Plan Details",
+        "current_plan": "Current Plan",
+        "usage": "Usage",
+        "edit_profile": "Edit Profile",
+        "email": "Email",
+        "phone": "Phone",
+        "member_since": "Member Since"
+    },
+    "careers": {
+        "join_team": "Join the Team",
+        "title": "Shape the Future",
+        "title_highlight": "of Digital",
+        "description": "We are building the next generation of digital experiences. If you are passionate, creative, and ready to make an impact, we want you.",
+        "life_at_step": "Life at Step Of Step",
+        "life_desc": "More than just a workplace. We are a community of innovators, creators, and dreamers.",
+        "benefits": {
+            "health": "Health & Wellness",
+            "health_desc": "Comprehensive health coverage and wellness programs.",
+            "remote": "Remote Friendly",
+            "remote_desc": "Work from anywhere in the world with our distributed team.",
+            "growth": "Growth Support",
+            "growth_desc": "Annual budget for conferences, courses, and books."
+        },
+        "apply": {
+            "title": "Ready to Join Us?",
+            "subtitle": "Tell us about yourself and why you'd be a great fit.",
+            "fullname": "Full Name",
+            "email": "Email Address",
+            "phone": "Phone Number",
+            "why_us": "Why Step Of Step?",
+            "why_placeholder": "Tell us about your experience and what drives you...",
+            "upload_cv": "Upload CV",
+            "drag_drop": "Drag & drop your resume here or",
+            "browse": "browse",
+            "submit": "Submit Application",
+            "success_title": "Application Received!",
+            "success_desc": "Thank you for your interest. Our team will review your application and get back to you shortly."
+        }
+    },
+    "about": {
+        "our_story": "Our Story",
+        "title": "We Are The",
+        "title_highlight": "Architects of Digital",
+        "description": "Step Of Step helps ambitious brands navigate the digital landscape with purpose, precision, and powerful design.",
+        "stats": {
+            "projects": "Projects Delivered",
+            "satisfaction": "Client Satisfaction",
+            "awards": "Global Awards",
+            "support": "Support System"
+        },
+        "vision": "Our Vision",
+        "vision_desc": "To become the global standard for digital innovation, empowering businesses to transcend their limitations.",
+        "mission": "Our Mission",
+        "mission_desc": "Providing cutting-edge solutions in branding, development, and marketing that deliver measurable growth.",
+        "tagline": "Driven by Purpose,\nDefined by Results.",
+        "values": {
+            "title": "Core Values",
+            "innovation": "Innovation First",
+            "innovation_desc": "We never settle for the status quo. We push boundaries to find better solutions.",
+            "partnership": "Client Partnership",
+            "partnership_desc": "We don't just work for you; we work with you as an extension of your team.",
+            "excellence": "Excellence Always",
+            "excellence_desc": "From the smallest pixel to the largest campaign, quality is non-negotiable."
+        }
+    }
+}
