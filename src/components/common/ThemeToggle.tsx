@@ -25,7 +25,6 @@ const ThemeToggle = () => {
         { id: 'system', label: 'Sistem', icon: Monitor },
     ];
 
-    const currentThemeData = themes.find(t => t.id === theme) || themes[2];
     const CurrentIcon = effectiveTheme === 'dark' ? Moon : Sun;
 
     return (

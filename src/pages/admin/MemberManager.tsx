@@ -44,7 +44,7 @@ const MemberManager = () => {
 
             if (error) throw error;
 
-            const mappedMembers: Member[] = (data || []).map(u => ({
+            const mappedMembers: Member[] = (data || []).map((u: any) => ({
                 id: u.id,
                 name: u.name,
                 email: u.email,

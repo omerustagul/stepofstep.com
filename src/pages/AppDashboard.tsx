@@ -74,7 +74,7 @@ const DashboardHome = () => {
                             </div>
                             <div className="flex-1">
                                 <h4 className="font-medium text-zinc-900 group-hover:text-orange-500 transition-colors">{item.app_name}</h4>
-                                <p className="text-sm text-zinc-500">{new Date(item.timestamp).toLocaleTimeString()}</p>
+                                <p className="text-sm text-zinc-500">{new Date(item.created_at).toLocaleTimeString()}</p>
                             </div>
                             <div className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
                                 {item.action}

@@ -12,7 +12,7 @@ const HapticProduct = ({ onShake }: HapticProductProps) => {
     const [active, setActive] = useState(false);
     const [hovered, setHovered] = useState(false);
 
-    useFrame((state, delta) => {
+    useFrame((_, delta) => {
         if (meshRef.current) {
             // Base rotation
             meshRef.current.rotation.x += delta * 0.2;
@@ -40,7 +40,7 @@ const HapticProduct = ({ onShake }: HapticProductProps) => {
         <group position={[0, -0.5, 0]}>
             <Icosahedron
                 ref={meshRef}
-                args={[1, 0, 0]} // radius, detail
+                args={[1, 0]} // radius, detail
                 onPointerOver={() => {
                     setHovered(true);
                     document.body.style.cursor = 'pointer';

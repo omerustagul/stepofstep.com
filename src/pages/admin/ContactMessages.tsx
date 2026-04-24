@@ -55,7 +55,7 @@ const ContactMessages = () => {
                 .on(
                     'postgres_changes',
                     { event: '*', schema: 'public', table: 'contact_messages' },
-                    (payload) => {
+                    (payload: any) => {
                         // If selected message is updated (e.g. read status changed by another admin), update it
                         if (payload.eventType === 'UPDATE' && selectedMessage?.id === payload.new.id) {
                             // We will re-fetch anyway, so this might be redundant but good for immediate feedback

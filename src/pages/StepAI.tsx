@@ -7,7 +7,7 @@ import { supabase } from '../lib/supabase';
 import { useToast } from '../context/ToastContext';
 
 const StepAI = () => {
-    const { getPagePath } = useSiteSettings();
+    const { } = useSiteSettings();
     const { toast } = useToast();
     const [step, setStep] = useState<'input' | 'processing' | 'results'>('input');
     const [formData, setFormData] = useState({

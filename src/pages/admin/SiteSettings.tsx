@@ -489,7 +489,7 @@ const SiteSettings = () => {
                 defaultPages.forEach(p => pageMap.set(p.path, p));
                 
                 // Then override with DB data
-                data.forEach(p => pageMap.set(p.path, p));
+                data.forEach((p: PageSEO) => pageMap.set(p.path, p));
                 
                 const mergedPages = Array.from(pageMap.values());
 

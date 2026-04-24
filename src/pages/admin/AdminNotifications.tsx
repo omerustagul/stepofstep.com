@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
-import { Bell, Send, Users, User, ArrowRight, Loader2, Info, Check, AlertTriangle, AlertCircle, Eye } from 'lucide-react';
+import { Bell, Send, Users, User, Loader2, Info, Check, AlertTriangle, AlertCircle, Eye } from 'lucide-react';
 
 interface AppUser {
     id: string;
@@ -12,7 +12,7 @@ interface AppUser {
 }
 
 const AdminNotifications = () => {
-    const { user } = useAuth();
+    const { } = useAuth();
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<AppUser[]>([]);

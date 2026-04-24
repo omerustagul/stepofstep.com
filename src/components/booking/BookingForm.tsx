@@ -64,7 +64,7 @@ const BookingForm = ({ selectedDate, onSubmit, onBack, isSubmitting }: BookingFo
     const handleFormSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (validate()) {
-            onSubmit();
+            onSubmit(formData);
         }
     };
 

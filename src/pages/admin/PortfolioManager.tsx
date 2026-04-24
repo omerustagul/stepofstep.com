@@ -130,8 +130,8 @@ const PortfolioManager = () => {
             ...formData,
             name: formData.name || formData.title || '',
             title: formData.title || formData.name || '',
-            category: formData.category && formData.category.length > 0 ? formData.category : formData.serviceType,
-            serviceType: formData.serviceType && formData.serviceType.length > 0 ? formData.serviceType : formData.category,
+            category: (formData.category && formData.category.length > 0 ? formData.category : formData.serviceType) || [],
+            serviceType: (formData.serviceType && formData.serviceType.length > 0 ? formData.serviceType : formData.category) || [],
             image: formData.image || formData.imageUrl || '',
             imageUrl: formData.imageUrl || formData.image || '',
             results: processedResults
@@ -313,7 +313,7 @@ const PortfolioManager = () => {
                                                             className="hover:text-orange-900 cursor-pointer" 
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
-                                                                const newServices = formData.serviceType.filter(s => s !== service);
+                                                                const newServices = (formData.serviceType || []).filter(s => s !== service);
                                                                 setFormData({ ...formData, serviceType: newServices, category: newServices });
                                                             }}
                                                         />
@@ -339,16 +339,16 @@ const PortfolioManager = () => {
                                                     className="absolute z-20 left-0 right-0 mt-2 bg-white border border-zinc-200 rounded-2xl shadow-xl p-2 max-h-60 overflow-y-auto"
                                                 >
                                                     {SERVICE_OPTIONS.map((option) => {
-                                                        const isSelected = formData.serviceType.includes(option);
+                                                        const isSelected = (formData.serviceType || []).includes(option);
                                                         return (
                                                             <div
                                                                 key={option}
                                                                 onClick={() => {
                                                                     let newServices;
                                                                     if (isSelected) {
-                                                                        newServices = formData.serviceType.filter(s => s !== option);
+                                                                        newServices = (formData.serviceType || []).filter(s => s !== option);
                                                                     } else {
-                                                                        newServices = [...formData.serviceType, option];
+                                                                        newServices = [...(formData.serviceType || []), option];
                                                                     }
                                                                     setFormData({ ...formData, serviceType: newServices, category: newServices });
                                                                 }}

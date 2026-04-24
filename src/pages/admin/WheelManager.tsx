@@ -243,16 +243,16 @@ const WheelManager = () => {
                     </h1>
                     <p className="text-zinc-500">Çark ödüllerini ve kullanım geçmişini yönetin.</p>
                 </div>
-                <div className="flex items-center gap-2 bg-[rgb(var(--bg-secondary))]/10 border border-[rgb(var(--border-primary))]/20 p-1 rounded-2xl">
+                <div className="flex items-center gap-2 h-10 bg-[rgb(var(--bg-secondary))]/10 border border-[rgb(var(--border-primary))]/20 p-1 rounded-2xl">
                     <button
                         onClick={() => setActiveTab('rewards')}
-                        className={`px-4 py-1 rounded-xl font-medium transition-all ${activeTab === 'rewards' ? 'bg-white text-orange-600 shadow-sm' : 'text-zinc-500 hover:text-zinc-700'}`}
+                        className={`h-8 flex items-center justify-center px-4 py-2 rounded-xl font-medium transition-all ${activeTab === 'rewards' ? 'bg-white text-orange-600 shadow-sm' : 'text-zinc-500 hover:text-zinc-700'}`}
                     >
                         Ödüller
                     </button>
                     <button
                         onClick={() => setActiveTab('history')}
-                        className={`px-4 py-2 rounded-xl font-medium transition-all ${activeTab === 'history' ? 'bg-white text-orange-600 shadow-sm' : 'text-zinc-500 hover:text-zinc-700'}`}
+                        className={`h-8 flex items-center justify-center px-4 py-2 rounded-xl font-medium transition-all ${activeTab === 'history' ? 'bg-white text-orange-600 shadow-sm' : 'text-zinc-500 hover:text-zinc-700'}`}
                     >
                         Geçmiş
                     </button>

@@ -4,16 +4,16 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 // Aggressive AbortSignal stripper to bypass browser-level fetch cancellations
-const customFetch = async (url: string, options: any = {}) => {
+const customFetch = async (input: URL | RequestInfo, options: RequestInit = {}) => {
   // Remove signal to prevent "AbortError: signal is aborted without reason"
-  const { signal, ...otherOptions } = options;
+  const { signal, ...otherOptions } = options as any;
   
   // Add a safety timeout of 10 seconds to any fetch
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000);
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(input, {
       ...otherOptions,
       signal: controller.signal
     });

@@ -19,12 +19,6 @@ const BrandHealthWidget = () => {
         return 'text-red-500';
     };
 
-    const getBgColor = (s: number) => {
-        if (s >= 80) return 'bg-green-500';
-        if (s >= 50) return 'bg-orange-500';
-        return 'bg-red-500';
-    };
-
     const circumference = 2 * Math.PI * 40; // r=40
     const offset = circumference - (score / 100) * circumference;
 

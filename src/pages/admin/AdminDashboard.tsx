@@ -86,8 +86,8 @@ const AdminDashboard = () => {
                 .limit(10);
 
             const activities = [
-                ...(recentJobs?.map(j => ({ ...j, type: 'job' })) || []),
-                ...(recentAppointments?.map(a => ({ ...a, type: 'appointment', name: a.user_name })) || [])
+                ...(recentJobs?.map((j: any) => ({ ...j, type: 'job' })) || []),
+                ...(recentAppointments?.map((a: any) => ({ ...a, type: 'appointment', name: a.user_name })) || [])
             ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
                 .slice(0, 15); // Show up to 15 items in scrollable list
 

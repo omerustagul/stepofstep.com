@@ -44,8 +44,8 @@ const PlanManager = () => {
 
             // Filter out Free (0 price) plans from the management/edit list
             const formattedPlans = (plansData || [])
-                .filter(p => p.price_monthly > 0)
-                .map(p => ({
+                .filter((p: any) => p.price_monthly > 0)
+                .map((p: any) => ({
                     ...p,
                     features: typeof p.features === 'string' ? JSON.parse(p.features) : p.features
                 }));

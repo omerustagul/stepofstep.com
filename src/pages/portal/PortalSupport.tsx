@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, Briefcase, Plus, Search, CheckCheck, Clock, Send, Loader2, User, ShieldCheck } from 'lucide-react';
+import { MessageSquare, Briefcase, CheckCheck, Clock, Send, Loader2, User, ShieldCheck } from 'lucide-react';
 import PortalJobs from './PortalJobs';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';

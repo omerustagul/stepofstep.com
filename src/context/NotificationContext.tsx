@@ -75,7 +75,7 @@ export const NotificationProvider = ({ children }: { children: React.ReactNode }
                     table: 'notifications',
                     filter: `user_id=eq.${user.id}`
                 },
-                (payload) => {
+                (payload: any) => {
                     const eventType = payload.eventType;
                     if (eventType === 'INSERT') {
                         setNotifications(prev => [payload.new as Notification, ...prev]);

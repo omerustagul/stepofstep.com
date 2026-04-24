@@ -79,9 +79,9 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
             if (unlockResult.error) throw unlockResult.error;
             
             // Merge Data
-            const unlocksMap = new Map(unlockResult.data?.map(u => [u.achievement_id, u.unlocked_at]));
+            const unlocksMap = new Map(unlockResult.data?.map((u: any) => [u.achievement_id, u.unlocked_at]));
 
-            const merged = (achResult.data || []).map(a => ({
+            const merged = (achResult.data || []).map((a: any) => ({
                 ...a,
                 unlocked_at: unlocksMap.get(a.id)
             }));

@@ -153,7 +153,7 @@ const AppointmentManager = () => {
                     ) : (
                         <div className="grid grid-cols-1 gap-4">
                             {filteredAppointments.length === 0 ? (
-                                <div className="bg-[rgb(var(--card-color))] p-12 rounded-2xl border border-[rgb(var(--border-primary))] text-center text-zinc-400">
+                                <div className="bg-[rgb(var(--bg-secondary))]/5 p-12 rounded-2xl border border-[rgb(var(--border-primary))]/5 text-center text-[rgb(var(--text-secondary))]">
                                     <Calendar size={48} className="mx-auto mb-4 opacity-50" />
                                     <p>Görüntülenecek randevu bulunamadı.</p>
                                 </div>
