@@ -629,12 +629,17 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
                                                 // Improved Smart Text Wrapping Logic - Optimized for readability
                                                 const label = segment.label;
                                                 const words = label.split(' ');
-                                                const maxCharsPerLine = 12;
+                                                const maxCharsPerLine = 10; // Reduced for better containment
                                                 let lines: string[] = [];
                                                 let currentLine = "";
 
                                                 words.forEach((word: string) => {
-                                                    if ((currentLine + (currentLine ? " " : "") + word).length <= maxCharsPerLine) {
+                                                    // Handle single words longer than maxCharsPerLine
+                                                    if (word.length > maxCharsPerLine) {
+                                                        if (currentLine) lines.push(currentLine);
+                                                        lines.push(word);
+                                                        currentLine = "";
+                                                    } else if ((currentLine + (currentLine ? " " : "") + word).length <= maxCharsPerLine) {
                                                         currentLine += (currentLine ? " " : "") + word;
                                                     } else {
                                                         if (currentLine) lines.push(currentLine);
@@ -643,16 +648,22 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
                                                 });
                                                 if (currentLine) lines.push(currentLine);
 
-                                                // Limit to max 3 lines
+                                                // Limit to max 3 lines for safety
                                                 lines = lines.slice(0, 3);
 
-                                                // Dynamic Font Size - Balanced for center placement
-                                                let fontSize = 13; // Base size for 1 line
-                                                if (lines.length === 2) fontSize = 11;
-                                                if (lines.length >= 3) fontSize = 9.5;
+                                                // Dynamic Font Size - Adaptive based on line count and total characters
+                                                let fontSize = 12.5; 
+                                                if (lines.length === 2) fontSize = 10.5;
+                                                if (lines.length >= 3) fontSize = 8.5;
 
-                                                // Handle very long labels
-                                                if (label.length > 25) fontSize -= 1.5;
+                                                // More aggressive scaling for very long labels
+                                                const totalChars = label.length;
+                                                if (totalChars > 15) fontSize *= 0.95;
+                                                if (totalChars > 20) fontSize *= 0.9;
+                                                if (totalChars > 25) fontSize *= 0.85;
+
+                                                // Ensure a minimum readable font size
+                                                fontSize = Math.max(7, fontSize);
 
                                                 // VISUAL LOGIC:
                                                 // If we have a winner, everyone else dims.
