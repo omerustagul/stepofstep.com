@@ -190,7 +190,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', onSuccess }: AuthMo
                     initial={{ scale: 0.9, opacity: 0, y: 20 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
                     exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                    className="relative w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-[2.5rem] shadow-2xl overflow-hidden p-8"
+                    className="relative w-full max-w-md bg-[rgb(var(--bg-primary))] border border-[rgb(var(--border-primary))] rounded-3xl shadow-2xl overflow-hidden p-8"
                     onClick={e => e.stopPropagation()}
                 >
                     <button
@@ -204,10 +204,10 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', onSuccess }: AuthMo
                         <div className="w-16 h-16 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-500/20">
                             <Sparkles className="text-white" size={32} />
                         </div>
-                        <h2 className="text-2xl font-bold text-white tracking-tighter">
+                        <h2 className="text-2xl font-bold text-[rgb(var(--text-primary))] tracking-tighter">
                             {mode === 'login' ? 'Giriş Yap' : 'Kayıt Ol'}
                         </h2>
-                        <p className="text-zinc-500 text-sm mt-1">
+                        <p className="text-[rgb(var(--text-secondary))] text-sm mt-1">
                             {step === 'verify'
                                 ? 'Doğrulama kodunu gir'
                                 : (mode === 'login' ? 'Devam etmek için giriş yap' : 'Ücretsiz hesabını oluştur')}
@@ -228,9 +228,9 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', onSuccess }: AuthMo
                     {step === 'input' ? (
                         <div className="space-y-6">
                             {/* Method Switcher */}
-                            <div className="bg-zinc-800/50 p-1 rounded-xl flex relative">
+                            <div className="bg-[rgb(var(--bg-tertiary))] p-1 rounded-xl border border-[rgb(var(--border-primary))] flex relative">
                                 <motion.div
-                                    className="absolute top-1 bottom-1 rounded-lg bg-zinc-700 shadow-sm"
+                                    className="absolute top-1 bottom-1 rounded-lg bg-[rgb(var(--accent-primary))] shadow-sm"
                                     initial={false}
                                     animate={{
                                         x: loginMethod === 'email' ? 0 : '100%',
@@ -240,7 +240,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', onSuccess }: AuthMo
                                 />
                                 <button
                                     onClick={() => { setLoginMethod('email'); setError(null); }}
-                                    className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-bold relative z-10 transition-colors ${loginMethod === 'email' ? 'text-white' : 'text-zinc-400 hover:text-zinc-300'}`}
+                                    className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-bold relative z-10 transition-colors ${loginMethod === 'email' ? 'text-[rgb(var(--bg-card))]' : 'text-[rgb(var(--text-primary))] hover:text-[rgb(var(--text-primary))] hover:bg-[rgb(var(--bg-tertiary))]'}`}
                                 >
                                     <Mail size={16} /> E-posta
                                 </button>
@@ -281,14 +281,14 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login', onSuccess }: AuthMo
                                             else setPhone(e.target.value.replace(/[^0-9]/g, ''));
                                         }}
                                         placeholder={loginMethod === 'email' ? 'E-posta adresi' : '555 444 3322'}
-                                        className={`w-full bg-zinc-950 border border-zinc-800 rounded-2xl py-3 text-white focus:outline-none focus:border-orange-500 transition-colors font-medium placeholder:font-normal ${loginMethod === 'phone' ? 'pl-12 pr-4' : 'pl-12 pr-4'}`}
+                                        className={`w-full bg-[rgb(var(--bg-tertiary))] border border-[rgb(var(--border-primary))] rounded-2xl py-3 text-white focus:outline-none focus:border-orange-500 transition-colors font-medium placeholder:font-normal ${loginMethod === 'phone' ? 'pl-12 pr-4' : 'pl-12 pr-4'}`}
                                     />
                                 </div>
 
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-zinc-800 text-white font-black py-4 rounded-2xl transition-all active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-orange-500/10"
+                                    className="w-full h-12 bg-orange-500 hover:bg-orange-600 disabled:bg-zinc-800 text-white font-black rounded-2xl transition-all active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-orange-500/10"
                                 >
                                     {loading ? <Loader2 className="animate-spin" size={20} /> : <>Devam Et <ArrowRight size={20} /></>}
                                 </button>
