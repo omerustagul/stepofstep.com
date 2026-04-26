@@ -30,6 +30,7 @@ interface PortfolioContextType {
     updateItem: (id: string, item: Partial<PortfolioItem>) => Promise<void>;
     deleteItem: (id: string) => Promise<void>;
     refreshData: () => Promise<void>;
+    getItemBySlug: (slugOrId: string) => Promise<PortfolioItem | null>;
 }
 
 const PortfolioContext = createContext<PortfolioContextType | undefined>(undefined);
@@ -95,9 +96,11 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
     const fetchData = useCallback(async () => {
         setLoading(true);
         try {
+            // OPTIMIZATION: Only fetch necessary fields for the list view
+            // Large fields like gallery_images, challenge, and solution are excluded
             const { data, error } = await supabase
                 .from('portfolios')
-                .select('*')
+                .select('id, name, description, category, image_url, logo_url, slug, featured, created_at')
                 .order('created_at', { ascending: false });
 
             if (error) {
@@ -260,7 +263,55 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [fetchData]);
 
-    const value = useMemo(() => ({ items, loading, addItem, updateItem, deleteItem, refreshData }), [items, loading, addItem, updateItem, deleteItem, refreshData]);
+    const getItemBySlug = useCallback(async (slugOrId: string): Promise<PortfolioItem | null> => {
+        // First check in local state
+        const localItem = items.find(i => i.id === slugOrId || i.slug === slugOrId);
+        
+        // If local item exists and has galleryImages, it's already full
+        if (localItem && localItem.galleryImages && localItem.galleryImages.length > 0) {
+            return localItem;
+        }
+
+        // Fetch full data from Supabase
+        try {
+            const { data, error } = await supabase
+                .from('portfolios')
+                .select('*')
+                .or(`id.eq.${slugOrId},slug.eq.${slugOrId}`)
+                .maybeSingle();
+
+            if (error) throw error;
+            if (data) {
+                // Map DB to PortfolioItem
+                return {
+                    id: data.id,
+                    name: data.name,
+                    title: data.name,
+                    description: data.description,
+                    category: data.category || [],
+                    serviceType: data.category || [],
+                    image: data.image_url,
+                    imageUrl: data.image_url,
+                    logoUrl: data.logo_url,
+                    clientName: data.client_name,
+                    slug: data.slug,
+                    featured: data.featured,
+                    challenge: data.challenge,
+                    solution: data.solution,
+                    results: data.results || [],
+                    galleryImages: data.gallery_images || [],
+                    latitude: data.latitude,
+                    longitude: data.longitude
+                };
+            }
+        } catch (err) {
+            console.error('Error fetching single portfolio:', err);
+        }
+
+        return localItem || null;
+    }, [items]);
+
+    const value = useMemo(() => ({ items, loading, addItem, updateItem, deleteItem, refreshData, getItemBySlug }), [items, loading, addItem, updateItem, deleteItem, refreshData, getItemBySlug]);
 
     return (
         <PortfolioContext.Provider value={value}>

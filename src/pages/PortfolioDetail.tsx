@@ -1,14 +1,34 @@
+import { useState, useEffect } from 'react';
 import { useParams, Navigate, useNavigate } from 'react-router-dom';
-import { usePortfolio } from '../context/PortfolioContext';
+import { usePortfolio, PortfolioItem } from '../context/PortfolioContext';
 import { motion } from 'framer-motion';
-import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Loader2 } from 'lucide-react';
 
 const PortfolioDetail = () => {
     const { id } = useParams();
-    const { items } = usePortfolio();
+    const { getItemBySlug } = usePortfolio();
     const navigate = useNavigate();
+    const [portfolio, setPortfolio] = useState<PortfolioItem | null>(null);
+    const [loading, setLoading] = useState(true);
 
-    const portfolio = items.find(item => item.id === id || item.slug === id);
+    useEffect(() => {
+        const loadPortfolio = async () => {
+            if (!id) return;
+            setLoading(true);
+            const data = await getItemBySlug(id);
+            setPortfolio(data);
+            setLoading(false);
+        };
+        loadPortfolio();
+    }, [id, getItemBySlug]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-[rgb(var(--bg-primary))] flex items-center justify-center">
+                <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
+            </div>
+        );
+    }
 
     if (!portfolio) {
         return <Navigate to="/404" replace />;
