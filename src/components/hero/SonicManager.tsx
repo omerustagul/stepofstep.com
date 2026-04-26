@@ -252,10 +252,7 @@ export const GlobalSonic = () => {
             const currentScrollY = window.scrollY;
             const delta = currentScrollY - lastScrollY.current;
             const speed = Math.min(Math.abs(delta), 80); 
-            const nowTime = Date.now();
             
-            lastScrollTime = nowTime;
-
             const ctx = initAudio();
             if (ctx && audioInitialized.current) {
                 const now = ctx.currentTime;
