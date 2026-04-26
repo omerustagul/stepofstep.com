@@ -35,7 +35,7 @@ const PortfolioDetail = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[rgb(var(--bg-primary))] pt-32 transition-colors duration-300">
+        <div className="min-h-screen bg-[rgb(var(--bg-primary))] pt-28 transition-colors duration-300">
             {/* Hero Section - Contained with rounded corners */}
             <div className="max-w-6xl mx-auto pt-6 px-6">
                 {/* Back Button - Compact inline */}
@@ -69,7 +69,7 @@ const PortfolioDetail = () => {
                                     </span>
                                 ))}
                             </div>
-                            <h1 className="text-2xl md:text-5xl lg:text-5xl font-black text-white mb-3 leading-tight">
+                            <h1 className="text-xl md:text-2xl lg:text-3xl font-black text-white mb-3 leading-tight">
                                 {portfolio.name || portfolio.title}
                             </h1>
                             <p className="text-sm md:text-sm text-zinc-200 max-w-2xl font-light">
@@ -81,7 +81,7 @@ const PortfolioDetail = () => {
             </div>
 
             <div className="max-w-6xl mx-auto px-6 py-16">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Main Content */}
                     <div className="lg:col-span-2 space-y-16">
 
@@ -89,14 +89,14 @@ const PortfolioDetail = () => {
                         {(portfolio.challenge || portfolio.solution) && (
                             <section className="grid md:grid-cols-2 gap-8">
                                 {portfolio.challenge && (
-                                    <div className="bg-[rgb(var(--bg-card))] p-8 rounded-3xl shadow-sm border border-[rgb(var(--border-primary))]">
-                                        <h3 className="text-xl font-bold text-[rgb(var(--text-primary))] mb-4">Markanın Problemi</h3>
+                                    <div className="bg-[rgb(var(--bg-card))] p-4 rounded-3xl shadow-sm border border-[rgb(var(--border-primary))]">
+                                        <h3 className="text-lg font-bold text-[rgb(var(--text-primary))] mb-3">Markanın Problemi</h3>
                                         <p className="text-[rgb(var(--text-secondary))] leading-relaxed">{portfolio.challenge}</p>
                                     </div>
                                 )}
                                 {portfolio.solution && (
-                                    <div className="bg-zinc-900 p-8 rounded-3xl text-white shadow-xl">
-                                        <h3 className="text-xl font-bold mb-4 text-orange-400">Çözüm Planı</h3>
+                                    <div className="bg-zinc-900 p-4 rounded-3xl text-white shadow-xl">
+                                        <h3 className="text-lg font-bold mb-3 text-orange-400">Çözüm Planı</h3>
                                         <p className="text-zinc-300 leading-relaxed">{portfolio.solution}</p>
                                     </div>
                                 )}
@@ -128,16 +128,16 @@ const PortfolioDetail = () => {
                     {/* Sidebar */}
                     <div className="space-y-8">
                         {/* Client Info */}
-                        <div className="bg-[rgb(var(--bg-card))] p-8 rounded-3xl shadow-lg border border-[rgb(var(--border-primary))] sticky top-8 text-[rgb(var(--text-primary))]">
-                            <h3 className="text-lg font-bold text-[rgb(var(--text-primary))] mb-6 pb-4 border-b border-[rgb(var(--border-primary))]">Proje Detayları</h3>
+                        <div className="bg-[rgb(var(--bg-card))] p-4 rounded-3xl shadow-lg border border-[rgb(var(--border-primary))] sticky top-8 text-[rgb(var(--text-primary))]">
+                            <h3 className="text-lg font-bold text-[rgb(var(--text-primary))] mb-3 pb-3 border-b border-[rgb(var(--border-primary))]">Proje Detayları</h3>
 
-                            <div className="space-y-6">
+                            <div className="space-y-3">
                                 <div>
-                                    <p className="text-xs text-[rgb(var(--text-tertiary))] uppercase tracking-wider font-bold mb-1">Marka</p>
+                                    <p className="text-xs text-[rgb(var(--text-tertiary))] font-bold mb-1">Marka</p>
                                     <p className="text-[rgb(var(--text-primary))] font-medium text-lg">{portfolio.clientName || 'Confidential'}</p>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-[rgb(var(--text-tertiary))] uppercase tracking-wider font-bold mb-2">Hizmet Türleri</p>
+                                    <p className="text-xs text-[rgb(var(--text-tertiary))] font-bold mb-2">Hizmet Türleri</p>
                                     <div className="flex flex-wrap gap-1">
                                         {((Array.isArray(portfolio.serviceType) ? portfolio.serviceType : (portfolio.serviceType ? [portfolio.serviceType] : (portfolio.category ? [portfolio.category] : []))) as string[]).map((cat, i) => (
                                             <span key={i} className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">

@@ -106,7 +106,7 @@ const PlanManager = () => {
                     successCount++;
                 }
             }
-            
+
             if (failCount === 0) {
                 alert('Tüm plan ayarları başarıyla kaydedildi!');
             } else {
@@ -250,11 +250,11 @@ const PlanManager = () => {
                 )}
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-end justify-end gap-2">
                 <div>
                     <button
                         onClick={handleAddPlan}
-                        className="flex items-center gap-2 px-8 py-3 bg-orange-50 text-orange-600 rounded-2xl font-bold hover:bg-orange-100 transition-all text-sm"
+                        className="flex items-center justify-center min-w-40 gap-2 px-3 py-3 bg-orange-50 text-orange-600 rounded-2xl font-bold hover:bg-orange-100 transition-all text-sm"
                     >
                         <Plus size={16} /> Plan Oluştur
                     </button>
@@ -263,7 +263,7 @@ const PlanManager = () => {
                     <button
                         onClick={handleSavePlans}
                         disabled={saving || membershipPlans.length === 0}
-                        className="flex items-center gap-2 px-8 py-3 bg-orange-500 text-white text-sm rounded-2xl font-bold hover:bg-orange-600 transition-all active:scale-95 disabled:opacity-50"
+                        className="flex items-center justify-center min-w-40 gap-2 px-3 py-3 bg-orange-500 text-white text-sm rounded-2xl font-bold hover:bg-orange-600 transition-all active:scale-95 disabled:opacity-50"
                     >
                         {saving ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
                         Planları Kaydet

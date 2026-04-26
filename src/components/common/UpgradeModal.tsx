@@ -113,18 +113,18 @@ const UpgradeModal = ({ isOpen, onClose }: UpgradeModalProps) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-[rgb(var(--bg-secondary))]/80 backdrop-blur-sm"
+                        className="absolute inset-0 bg-black/30 backdrop-blur-sm"
                     />
 
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="bg-[rgb(var(--bg-card))]/80 backdrop-blur-xl w-full max-w-6xl rounded-[2rem] shadow-2xl relative z-10 overflow-hidden flex flex-col max-h-[90vh] border border-[rgb(var(--border-primary))]"
+                        className="bg-[rgb(var(--bg-card))]/80 backdrop-blur-xl w-full max-w-6xl rounded-3xl shadow-2xl relative z-10 overflow-hidden flex flex-col max-h-[90vh] border border-[rgb(var(--border-primary))]"
                     >
                         {!success ? (
                             <>
-                                <div className="p-2 px-6 md:p-2 md:px-8 border-b border-[rgb(var(--border-primary))] flex justify-between items-center backdrop-blur-sm bg-[rgb(var(--bg-secondary))]/50">
+                                <div className="p-3 px-6 md:p-4 md:px-8 border-b border-[rgb(var(--border-primary))] flex justify-between items-center backdrop-blur-sm bg-[rgb(var(--bg-secondary))]/50">
                                     <div>
                                         <h2 className="text-xl font-black text-[rgb(var(--text-primary))] tracking-tight">{t('dashboard.upgrade_plan')}</h2>
                                         <p className="text-[rgb(var(--text-secondary))] font-medium text-sm mt-0">{t('auth.unlock_full_power', 'Hizmetlerimizin tam gücünü keşfedin.')}</p>
@@ -134,7 +134,7 @@ const UpgradeModal = ({ isOpen, onClose }: UpgradeModalProps) => {
                                     </button>
                                 </div>
 
-                                <div className="p-2 md:p-4 overflow-y-auto custom-scrollbar">
+                                <div className="p-3 md:p-3 overflow-y-auto custom-scrollbar">
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
                                         {plansLoading ? (
                                             <div className="col-span-3 py-32 flex flex-col items-center justify-center gap-4 text-[rgb(var(--text-primary))]">
@@ -174,7 +174,7 @@ const UpgradeModal = ({ isOpen, onClose }: UpgradeModalProps) => {
                                                 <div
                                                     key={plan.id}
                                                     onClick={() => !isCurrentPlan && setSelectedPlan(plan.id)}
-                                                    className={`relative rounded-3xl p-8 transition-all duration-300 flex flex-col h-full bg-[rgb(var(--bg-secondary))] border-2 ${isCurrentPlan
+                                                    className={`relative rounded-3xl p-4 transition-all duration-300 flex flex-col h-full bg-[rgb(var(--bg-secondary))] border-2 ${isCurrentPlan
                                                         ? 'border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.1)] cursor-default'
                                                         : isSelected
                                                             ? 'border-orange-500 shadow-[0_0_40px_rgba(249,115,22,0.15)] scale-[1.02] -translate-y-2 z-10'
@@ -187,22 +187,22 @@ const UpgradeModal = ({ isOpen, onClose }: UpgradeModalProps) => {
                                                         </div>
                                                     )}
                                                     {plan.is_popular && !isCurrentPlan && (
-                                                        <div className="absolute -top-4 inset-x-0 mx-auto w-fit bg-gradient-to-r from-orange-500 to-pink-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full shadow-lg tracking-widest uppercase flex items-center gap-1">
+                                                        <div className="absolute -top-4 inset-x-0 mx-auto w-fit bg-gradient-to-r from-orange-500 to-pink-600 text-white text-[12px] font-black px-4 py-1.5 rounded-full shadow-lg flex items-center gap-1">
                                                             <Star size={12} fill="currentColor" /> En Çok Tercih Edilen
                                                         </div>
                                                     )}
 
-                                                    <div className={`w-14 h-14 ${plan.color || 'bg-[rgb(var(--bg-tertiary))]'} rounded-2xl flex items-center justify-center mb-6 shadow-inner`}>
-                                                        <Icon size={28} className={isCurrentPlan ? 'text-green-600' : 'text-[rgb(var(--text-primary))]'} />
+                                                    <div className={`w-10 h-10 ${plan.color || 'bg-[rgb(var(--bg-tertiary))]'} rounded-2xl flex items-center justify-center mb-2 shadow-inner`}>
+                                                        <Icon size={20} className={isCurrentPlan ? 'text-green-600' : 'text-[rgb(var(--text-primary))]'} />
                                                     </div>
 
-                                                    <h3 className="font-black text-2xl mb-2 text-[rgb(var(--text-primary))]">{plan.name}</h3>
-                                                    <p className="text-sm text-[rgb(var(--text-secondary))] mb-6 leading-relaxed min-h-[40px]">
+                                                    <h3 className="font-black text-xl text-[rgb(var(--text-primary))]">{plan.name}</h3>
+                                                    <p className="text-sm text-[rgb(var(--text-secondary))] mb-2 leading-relaxed min-h-[40px]">
                                                         {plan.description || "Profesyoneller için gelişmiş özellikler."}
                                                     </p>
 
                                                     {plan.price_monthly === 0 ? (
-                                                        <div className="text-4xl font-black mb-8 text-[rgb(var(--text-primary))]">Ücretsiz</div>
+                                                        <div className="text-2xl font-black text-[rgb(var(--text-primary))]">Ücretsiz</div>
                                                     ) : (
                                                         <div className="mb-8">
                                                             {hasDiscount ? (
@@ -232,9 +232,9 @@ const UpgradeModal = ({ isOpen, onClose }: UpgradeModalProps) => {
                                                         </div>
                                                     )}
 
-                                                    <div className="border-t border-[rgb(var(--border-primary))] my-6 w-full" />
+                                                    <div className="border-t border-[rgb(var(--border-primary))] my-4 w-full" />
 
-                                                    <ul className="space-y-4 mb-8 flex-1">
+                                                    <ul className="space-y-2 mb-4 flex-1">
                                                         {features.map((feature: string, i: number) => (
                                                             <li key={i} className="flex items-start gap-3 text-sm font-medium text-[rgb(var(--text-secondary))]">
                                                                 <div className={`mt-0.5 p-0.5 rounded-full ${isCurrentPlan || isSelected ? 'bg-green-500 text-white' : 'bg-[rgb(var(--text-tertiary))] text-[rgb(var(--bg-primary))]'}`}>
@@ -292,14 +292,14 @@ const UpgradeModal = ({ isOpen, onClose }: UpgradeModalProps) => {
                                     <div className="flex gap-1 md:gap-4 w-full md:w-auto">
                                         <button
                                             onClick={onClose}
-                                            className="flex-1 md:flex-none px-3 py-3 md:px-6 md:py-3 font-bold text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] hover:bg-[rgb(var(--bg-input))] rounded-full transition-all text-sm border border-transparent hover:border-[rgb(var(--border-primary))]"
+                                            className="flex-1 md:flex-none px-3 py-3 md:px-6 md:py-3 font-bold text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] hover:bg-[rgb(var(--bg-input))] rounded-xl transition-all text-sm border border-transparent hover:border-[rgb(var(--border-primary))]"
                                         >
                                             {t('common.cancel', 'Vazgeç')}
                                         </button>
                                         <button
                                             onClick={handleUpgrade}
                                             disabled={!selectedPlan || loading || selectedPlan === currentPlan}
-                                            className="flex-1 md:flex-none px-3 py-3 md:px-6 md:py-3 bg-gradient-to-r from-orange-500 to-pink-600 text-white font-black rounded-full hover:shadow-lg hover:shadow-orange-500/25 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none transition-all flex items-center justify-center gap-3 text-sm"
+                                            className="flex-1 md:flex-none px-3 py-3 md:px-6 md:py-3 bg-gradient-to-r from-orange-500 to-pink-600 text-white font-black rounded-xl hover:shadow-lg hover:shadow-orange-500/25 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none transition-all flex items-center justify-center gap-3 text-sm"
                                         >
                                             {loading ? (
                                                 <>

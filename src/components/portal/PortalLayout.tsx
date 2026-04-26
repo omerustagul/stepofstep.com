@@ -123,7 +123,7 @@ const PortalLayout = () => {
                                             key={item.path}
                                             to={item.path}
                                             onClick={() => { if (window.innerWidth < 768) setSidebarOpen(false); }}
-                                            className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group relative overflow-hidden
+                                            className={`flex items-center gap-6 px-3 py-3 rounded-xl transition-all duration-200 group relative overflow-hidden
                                                 ${isActive
                                                     ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/25'
                                                     : 'bg-transparent text-[rgb(var(--text-secondary))] hover:bg-[rgb(var(--bg-tertiary))] hover:text-[rgb(var(--text-primary))]'
@@ -152,10 +152,10 @@ const PortalLayout = () => {
                                     onClick={() => setUpgradeModalOpen(true)}
                                     className="relative w-full group overflow-hidden rounded-2xl p-[1px]"
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 animate-gradient-x" />
-                                    <div className="relative bg-[rgb(var(--bg-card))] hover:bg-transparent transition-colors duration-300 rounded-2xl px-4 py-3 flex items-center justify-center gap-2">
-                                        <Sparkles size={18} className="text-orange-500 group-hover:text-white transition-colors animate-pulse" />
-                                        <span className="font-black text-sm text-[rgb(var(--text-primary))] group-hover:text-white tracking-wide uppercase">Paket Yükselt</span>
+                                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 border border-orange-300 rounded-[18px] animate-gradient-x" />
+                                    <div className="relative gradient-to-r from-orange-500 via-amber-500 to-orange-500 hover:bg-transparent transition-colors duration-300 rounded-2xl px-4 py-3 flex items-center justify-center gap-2">
+                                        <Sparkles size={18} className="text-white group-hover:text-white transition-colors animate-pulse" />
+                                        <span className="font-black text-sm text-white group-hover:text-white tracking-wide uppercase">Paket Yükselt</span>
                                     </div>
                                 </button>
 
@@ -166,8 +166,8 @@ const PortalLayout = () => {
                                             {user?.photo_url ? (
                                                 <img src={user.photo_url} alt="User" className="w-full h-full rounded-full object-cover" />
                                             ) : (
-                                                <div className="w-full h-full rounded-full bg-gradient-to-br from-[rgb(var(--bg-primary))] to-[rgb(var(--bg-secondary))] flex items-center justify-center">
-                                                    <span className="font-bold text-lg uppercase text-[rgb(var(--text-primary))]">{user?.name?.charAt(0) || 'U'}</span>
+                                                <div className="w-full h-full rounded-full bg-gradient-to-br from-purple-500 to-orange-500 flex items-center justify-center">
+                                                    <span className="font-bold text-lg uppercase text-white">{user?.name?.charAt(0) || 'U'}</span>
                                                 </div>
                                             )}
                                         </div>

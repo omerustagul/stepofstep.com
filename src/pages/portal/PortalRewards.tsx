@@ -24,10 +24,7 @@ const PortalRewards = () => {
         try {
             const { data, error } = await supabase
                 .from('wheel_spins')
-                .select(`
-                    id, spin_date, is_claimed, claimed_at, meta_data,
-                    wheel_rewards (label, value, reward_type, reward_value, file_url)
-                `)
+                .select('id, spin_date, is_claimed, claimed_at, meta_data, created_at')
                 .eq('user_id', user.id)
                 .order('created_at', { ascending: false });
 
@@ -95,29 +92,31 @@ const PortalRewards = () => {
 
                 {/* Tabs or Filters could go here */}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {/* Show unlocked first, then locked */}
-                    {unlockedAchievements.map((achievement) => (
-                        <div key={achievement.id} onMouseEnter={() => vibrate('light')}>
-                            <AchievementCard achievement={achievement} />
-                        </div>
-                    ))}
-                    {lockedAchievements.map((achievement) => (
-                        <div key={achievement.id} onMouseEnter={() => vibrate('light')}>
-                            <AchievementCard achievement={achievement} />
-                        </div>
-                    ))}
+                <div className="max-h-[500px] overflow-y-auto pr-3 custom-scrollbar">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {/* Show unlocked first, then locked */}
+                        {unlockedAchievements.map((achievement) => (
+                            <div key={achievement.id} onMouseEnter={() => vibrate('light')}>
+                                <AchievementCard achievement={achievement} />
+                            </div>
+                        ))}
+                        {lockedAchievements.map((achievement) => (
+                            <div key={achievement.id} onMouseEnter={() => vibrate('light')}>
+                                <AchievementCard achievement={achievement} />
+                            </div>
+                        ))}
 
-                    {achievements.length === 0 && !loading && (
-                        <div className="col-span-full p-8 text-center bg-[rgb(var(--bg-tertiary))] rounded-2xl border border-[rgb(var(--border-primary))] border-dashed">
-                            <p className="text-[rgb(var(--text-secondary))]">Henüz başarım yüklenmedi.</p>
-                        </div>
-                    )}
+                        {achievements.length === 0 && !loading && (
+                            <div className="col-span-full p-8 text-center bg-[rgb(var(--bg-tertiary))] rounded-2xl border border-[rgb(var(--border-primary))] border-dashed">
+                                <p className="text-[rgb(var(--text-secondary))]">Henüz başarım yüklenmedi.</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
             {/* Stats / Milestones (Optional Future) */}
-            <div className="glass-panel p-6 rounded-2xl border border-[rgb(var(--border-primary))]">
+            <div className="glass-panel p-3 rounded-2xl border border-[rgb(var(--border-primary))]">
                 <h3 className="font-bold text-[rgb(var(--text-primary))] mb-4 flex items-center gap-2">
                     <Target className="text-blue-500" />
                     Sonraki Hedefler
@@ -141,7 +140,7 @@ const PortalRewards = () => {
             </div>
             {/* Wheel History */}
             <div className="bg-[rgb(var(--bg-card))] rounded-3xl border border-[rgb(var(--border-primary))] shadow-sm overflow-hidden">
-                <div className="p-6 border-b border-[rgb(var(--border-primary))] flex items-center justify-between">
+                <div className="p-3 border-b border-[rgb(var(--border-primary))] flex items-center justify-between">
                     <h2 className="font-black text-lg flex items-center gap-2 text-[rgb(var(--text-primary))]"><Gift className="text-orange-500" size={20} /> Çark Geçmişi</h2>
                     <span className="text-xs font-bold bg-[rgb(var(--bg-tertiary))] px-3 py-1 rounded-full text-[rgb(var(--text-secondary))]">{spinHistory.length} Döndürme</span>
                 </div>
@@ -165,15 +164,15 @@ const PortalRewards = () => {
                                                 {isFile ? <Download size={20} /> : spin.is_claimed ? <CheckCircle2 size={20} /> : <Gift size={20} />}
                                             </div>
                                             <div className="min-w-0">
-                                                <p className="font-bold text-sm text-[rgb(var(--text-primary))] truncate">{spin.wheel_rewards?.label || 'Sürpriz Ödül'}</p>
+                                                <p className="font-bold text-sm text-[rgb(var(--text-primary))] truncate">{meta.label || 'Sürpriz Ödül'}</p>
                                                 <p className="text-xs text-[rgb(var(--text-secondary))]">{new Date(spin.spin_date).toLocaleDateString('tr-TR')}</p>
                                             </div>
                                         </div>
 
                                         <div className="shrink-0">
-                                            {spin.wheel_rewards?.file_url ? (
+                                            {meta.file ? (
                                                 <a
-                                                    href={spin.wheel_rewards.file_url}
+                                                    href={meta.file}
                                                     target="_blank"
                                                     download
                                                     className="w-10 h-10 md:w-auto md:h-auto md:px-3 md:py-1.5 bg-zinc-100 rounded-lg text-zinc-600 hover:bg-orange-500 hover:text-white flex items-center justify-center gap-2 transition-colors"

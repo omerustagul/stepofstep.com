@@ -15,14 +15,14 @@ const PortalMobileHeader = ({ isSidebarOpen, setSidebarOpen }: { isSidebarOpen: 
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="md:hidden fixed top-4 left-6 right-8 h-16 rounded-3xl bg-[rgb(var(--bg-card))]/50 backdrop-blur-sm border border-[rgb(var(--border-primary))] rounded-full flex items-center justify-between px-2 z-40 shadow-xl shadow-black/5"
+            className="md:hidden fixed top-4 left-6 right-8 h-16 rounded-[24px] bg-[rgb(var(--bg-card))]/50 backdrop-blur-sm border border-[rgb(var(--border-primary))] rounded-full flex items-center justify-between px-2 z-40 shadow-xl shadow-black/5"
         >
             {/* Left: Menu & Logo */}
             <div className="flex items-center gap-1 pl-0">
                 <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setSidebarOpen(!isSidebarOpen)}
-                    className="p-2 text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] bg-[rgb(var(--bg-tertiary))]/50 hover:bg-[rgb(var(--bg-tertiary))] rounded-full transition-all"
+                    className="p-2 text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] bg-[rgb(var(--bg-tertiary))]/50 hover:bg-[rgb(var(--bg-tertiary))] rounded-[12px] transition-all"
                 >
                     <Menu size={20} />
                 </motion.button>
@@ -52,7 +52,7 @@ const PortalMobileHeader = ({ isSidebarOpen, setSidebarOpen }: { isSidebarOpen: 
                         {user?.photo_url ? (
                             <img src={user.photo_url} alt="Profile" className="w-full h-full object-cover" />
                         ) : (
-                            <span className="text-lg uppercase font-bold text-[rgb(var(--text-primary))]">{user?.name?.charAt(0) || 'U'}</span>
+                            <span className="text-lg uppercase font-bold text-white">{user?.name?.charAt(0) || 'U'}</span>
                         )}
                     </div>
                 </Link>

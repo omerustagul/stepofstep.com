@@ -81,7 +81,7 @@ const AdminBar = () => {
 
     return (
         <div className="fixed top-0 left-0 right-0 z-[60] bg-zinc-900 text-white border-b border-zinc-800 shadow-xl">
-            <div className="max-w-full mx-auto h-12 md:h-10 flex items-center justify-between pl-4 pr-2 md:px-4">
+            <div className="max-w-full mx-auto h-10 md:h-8 flex items-center justify-between pl-4 pr-2 md:px-4">
 
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-1 h-full">

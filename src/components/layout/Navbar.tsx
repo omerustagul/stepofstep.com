@@ -125,7 +125,7 @@ const Navbar = () => {
                     {/* Mobile: Contact Button (Text + Icon) */}
                     <button
                         onClick={() => scrollToSection('contact')}
-                        className="md:hidden glass-button h-9 px-3 py-1 bg-white hover:bg-orange-500 hover:text-white rounded-2xl text-orange-500 text-[10px] font-bold flex items-center gap-1.5 shadow-lg shadow-orange-500/10 active:scale-95 transition-all"
+                        className="md:hidden glass-button h-10 px-3 py-2 bg-white hover:bg-orange-500 hover:text-white rounded-2xl text-orange-500 text-[12px] font-bold flex items-center gap-1.5 shadow-lg shadow-orange-500/10 active:scale-95 transition-all"
                     >
                         <span>Dijital Dönüşüm</span>
                         <Rocket size={12} />

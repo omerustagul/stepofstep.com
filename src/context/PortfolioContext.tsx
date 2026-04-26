@@ -100,7 +100,7 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
             // Large fields like gallery_images, challenge, and solution are excluded
             const { data, error } = await supabase
                 .from('portfolios')
-                .select('id, name, description, category, image_url, logo_url, slug, featured, created_at')
+                .select('id, name, description, category, image_url, logo_url, slug, featured, created_at, client_name, challenge, solution, results, gallery_images')
                 .order('created_at', { ascending: false });
 
             if (error) {

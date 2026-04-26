@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import { Trophy, X, Sparkles, Gift, AlertCircle, Loader2, Check, Download } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
@@ -397,6 +398,27 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
                 // Delay popup to allow user to see the glowing segment (User Request)
                 setTimeout(() => {
                     setResult(winningSegment.value);
+
+                    // Trigger Celebration!
+                    if (winningSegment.reward_type !== 'try_again') {
+                        const duration = 3 * 1000;
+                        const animationEnd = Date.now() + duration;
+                        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+
+                        const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+
+                        const interval: any = setInterval(function () {
+                            const timeLeft = animationEnd - Date.now();
+
+                            if (timeLeft <= 0) {
+                                return clearInterval(interval);
+                            }
+
+                            const particleCount = 50 * (timeLeft / duration);
+                            confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+                            confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+                        }, 250);
+                    }
                 }, 1500);
 
                 // Update next spin date for local UI
@@ -630,12 +652,12 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
                                                 // Improved Smart Text Wrapping Logic
                                                 const label = segment.label || '';
                                                 const words = label.split(' ');
-                                                
+
                                                 // Dynamic character limit based on segment width (angle)
                                                 // Narrower triangles need smaller limits
-                                                const charsPerLine = Math.floor(segmentAngle / 4); 
+                                                const charsPerLine = Math.floor(segmentAngle / 4);
                                                 const maxCharsPerLine = Math.max(5, Math.min(14, charsPerLine));
-                                                
+
                                                 let lines: string[] = [];
                                                 let currentLine = "";
 
@@ -651,7 +673,7 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
                                                     }
                                                 });
                                                 if (currentLine) lines.push(currentLine);
-                                                
+
                                                 // Max 4 lines to avoid vertical overflow
                                                 lines = lines.slice(0, 4);
 
@@ -664,10 +686,10 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
                                                 // Adjust for line count and longest line
                                                 const longestLine = Math.max(...lines.map(l => l.length));
                                                 let fontSize = baseFontSize;
-                                                
+
                                                 if (longestLine > 8) fontSize *= 0.9;
                                                 if (longestLine > 10) fontSize *= 0.8;
-                                                
+
                                                 if (lines.length === 2) fontSize *= 0.95;
                                                 if (lines.length >= 3) fontSize *= 0.85;
 
@@ -714,8 +736,8 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
                                                                 <tspan
                                                                     key={idx}
                                                                     x={textX}
-                                                                    dy={idx === 0 
-                                                                        ? `-${(lines.length - 1) * (fontSize * 0.55)}px` 
+                                                                    dy={idx === 0
+                                                                        ? `-${(lines.length - 1) * (fontSize * 0.55)}px`
                                                                         : `${fontSize * 1.1}px`}
                                                                 >
                                                                     {line}
@@ -783,56 +805,96 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
 
             <AnimatePresence>
                 {result && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-30 flex items-center justify-center p-6 bg-[rgb(var(--bg-primary))]/70 backdrop-blur-[6px] rounded-3xl">
-                        <motion.div initial={{ scale: 0.8, y: 100, rotate: -5 }} animate={{ scale: 1, y: 0, rotate: 0 }} exit={{ scale: 0.8, y: 100, rotate: 5 }} className="glass-card rounded-3xl p-12 text-center border-[2px] bg-[rgb(var(--bg-card))]/80 border-[rgb(var(--border-secondary))] max-w-sm w-full relative">
-                            <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 bg-orange-500 rounded-full border-[3px] border-[rgb(var(--border-secondary))] shadow-2xl flex items-center justify-center">
-                                <Sparkles className="text-[rgb(var(--text-primary))]" size={32} />
-                            </div>
-                            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: 'spring' }} className="w-24 h-24 bg-gradient-to-br from-orange-500 to-amber-500 rounded-full flex items-center justify-center mx-auto mb-10 shadow-2xl shadow-orange-500/30">
-                                {isTryAgain ? <Gift size={72} className="text-white" /> : <Trophy size={48} className="text-white" />}
-                            </motion.div>
-                            <h3 className="text-4xl font-black text-[rgb(var(--text-primary))] mb-4 tracking-tighter whitespace-nowrap">
-                                {isTryAgain ? 'Kısmet Değil!' : 'Tebrikler! 🎉'}
-                            </h3>
-                            <p className="text-2xl font-black text-orange-600 mb-12 drop-shadow-sm">{result}</p>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 z-40 flex items-center justify-center p-6 bg-zinc-950/40 backdrop-blur-sm"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, y: 20, opacity: 0 }}
+                            animate={{
+                                scale: 1,
+                                y: 0,
+                                opacity: 1,
+                                transition: { type: 'spring', damping: 25, stiffness: 300 }
+                            }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            className="bg-white rounded-3xl p-3 md:p-4 text-center shadow-2xl max-w-[420px] w-full relative overflow-hidden border border-white/20"
+                        >
+                            {/* Background Decorations */}
+                            <div className="absolute -top-12 -left-12 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl" />
+                            <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-amber-500/10 rounded-full blur-2xl" />
 
-                            {isClaimed ? (
-                                <div className="space-y-4">
-                                    <div className="py-4 bg-green-50 text-green-600 rounded-3xl font-bold flex items-center justify-center gap-2 animate-in fade-in slide-in-from-bottom-2">
-                                        <Check size={20} /> {lastWinningReward?.reward_type === 'file' ? 'Dosya Hazır!' : 'Ödül Tanımlandı!'}
-                                    </div>
-
-                                    {lastWinningReward?.reward_type === 'file' && lastWinningReward?.file_url && (
-                                        <a
-                                            href={lastWinningReward.file_url}
-                                            download
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="w-full py-4 bg-orange-600 text-white rounded-[2rem] font-black text-xl hover:bg-zinc-900 transition-all flex items-center justify-center gap-3 shadow-xl shadow-orange-500/20 active:scale-95"
-                                        >
-                                            <Download size={24} /> ŞİMDİ İNDİR
-                                        </a>
-                                    )}
-
-                                    {lastWinningReward?.reward_type === 'membership_discount' && lastWinningReward.reward_value && (
-                                        <p className="text-xs text-zinc-400 font-medium">
-                                            <span className="text-orange-600 font-bold uppercase">{lastWinningReward.reward_value.split(':')[0]}</span> planında
-                                            <span className="text-orange-600 font-bold"> %{lastWinningReward.reward_value.split(':')[1]}</span> indirim kazandınız!
-                                            Yükseltme sayfasında otomatik uygulanacaktır.
-                                        </p>
-                                    )}
-
-                                    <button onClick={onClose} className="w-full py-4 text-zinc-400 font-bold hover:text-zinc-600 transition-colors">Kapat</button>
-                                </div>
-                            ) : (
-                                <button
-                                    onClick={handleClaim}
-                                    disabled={claimLoading}
-                                    className="w-full py-6 bg-[rgb(var(--bg-orange-50))] text-[rgb(var(--text-primary))] rounded-3xl font-black text-2xl hover:bg-orange-500 transition-all active:scale-95 shadow-2xl shadow-zinc-950/20 flex items-center justify-center gap-3 mb-2"
+                            <div className="relative z-10">
+                                <motion.div
+                                    initial={{ y: -10, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ delay: 0.2 }}
+                                    className={`w-14 h-14 ${isTryAgain ? 'bg-zinc-100' : 'bg-orange-500'} rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg -rotate-3`}
                                 >
-                                    {claimLoading ? <Loader2 className="animate-spin" size={24} /> : 'Ödülü Al'}
-                                </button>
-                            )}
+                                    {isTryAgain ? (
+                                        <Gift size={28} className="text-zinc-400" />
+                                    ) : (
+                                        <Trophy size={28} className="text-white" />
+                                    )}
+                                </motion.div>
+
+                                <h3 className="text-2xl font-black text-zinc-900 mb-1 tracking-tight">
+                                    {isTryAgain ? 'Kısmet Değil!' : 'Tebrikler! 🎉'}
+                                </h3>
+
+                                <p className="text-zinc-400 text-xs font-medium mb-6 px-4">
+                                    {isTryAgain ? 'Şansını haftaya tekrar dene.' : 'Harika bir ödül kazandın!'}
+                                </p>
+
+                                <div className="bg-zinc-50 rounded-2xl p-4 mb-6 border border-zinc-100 relative group overflow-hidden">
+                                    <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mb-1">ÖDÜLÜNÜZ</p>
+                                    <p className="text-xl font-black text-orange-600 tracking-tight">{result}</p>
+                                </div>
+
+                                {isClaimed ? (
+                                    <div className="space-y-4">
+                                        <div className="py-3 bg-green-50 text-green-600 rounded-xl font-bold flex items-center justify-center gap-2 text-sm">
+                                            <Check size={18} /> {lastWinningReward?.reward_type === 'file' ? 'Dosya Hazır!' : 'Ödül Tanımlandı!'}
+                                        </div>
+
+                                        {lastWinningReward?.reward_type === 'file' && lastWinningReward?.file_url && (
+                                            <a
+                                                href={lastWinningReward.file_url}
+                                                download
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="w-full py-4 bg-orange-600 text-white rounded-xl font-bold hover:bg-zinc-900 transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 active:scale-95"
+                                            >
+                                                <Download size={20} /> İNDİR
+                                            </a>
+                                        )}
+
+                                        <button onClick={onClose} className="w-full py-2 text-zinc-400 font-bold hover:text-zinc-600 transition-colors text-sm">Kapat</button>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-3">
+                                        <button
+                                            onClick={handleClaim}
+                                            disabled={claimLoading}
+                                            className="w-full h-12 bg-zinc-900 text-white rounded-xl font-bold text-sm hover:bg-orange-600 transition-all active:scale-95 shadow-lg shadow-zinc-900/10 flex items-center justify-center gap-2"
+                                        >
+                                            {claimLoading ? <Loader2 className="animate-spin" size={18} /> : (
+                                                <>
+                                                    <span>{isTryAgain ? 'Anladım' : 'Ödülü Al'}</span>
+                                                    {!isTryAgain && <Check size={18} />}
+                                                </>
+                                            )}
+                                        </button>
+                                        {!isTryAgain && (
+                                            <p className="text-[10px] text-zinc-400 font-medium italic">
+                                                * Otomatik olarak hesabınıza eklenecektir.
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}

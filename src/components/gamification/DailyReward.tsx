@@ -51,7 +51,7 @@ const DailyReward = () => {
     }
 
     return (
-        <div className="glass-panel p-6 rounded-2xl border border-[rgb(var(--border-primary))] text-center relative overflow-hidden group">
+        <div className="glass-panel p-3 rounded-2xl border border-[rgb(var(--border-primary))] text-center relative overflow-hidden group">
             {/* Decor */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
 

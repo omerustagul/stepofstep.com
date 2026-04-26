@@ -54,7 +54,7 @@ const Services = () => {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            className="glass-card p-8 rounded-4xl bg-[rgb(var(--bg-card))]/50 relative border border-[rgb(var(--border-primary))] group hover:-translate-y-2 transition-transform duration-300"
+                            className="glass-card p-8 rounded-3xl bg-[rgb(var(--bg-card))]/50 relative border border-[rgb(var(--border-primary))] group hover:-translate-y-2 transition-transform duration-300"
                         >
                             <div className="flex justify-between items-start mb-6">
                                 <div className="w-10 h-10 flex items-center justify-center rounded-2xl bg-orange-100 dark:bg-orange-500/10 text-orange-500 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300 shadow-sm">
