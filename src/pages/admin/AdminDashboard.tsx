@@ -31,26 +31,35 @@ const AdminDashboard = () => {
     const fetchAnalytics = async () => {
         try {
             const { data, error } = await supabase.functions.invoke('fetch-analytics');
-            if (error) throw error;
+            
+            // Handle edge function specific errors
+            if (error) {
+                // Check if it's a CORS or Network error (common in local dev)
+                if (error.message?.includes('Failed to send a request') || error.message?.includes('CORS')) {
+                    setAnalyticsError('Analiz servisi yerel ortamda (CORS) engellendi veya henüz kurulmadı.');
+                    return;
+                }
+                throw error;
+            }
+
             if (data?.error) throw new Error(data.error);
 
             // Parse GA4 Response
-            // rows[0].metricValues order: activeUsers, sessions, avgDuration, bounceRate, pagePerSession, newUsers
             if (data?.rows?.[0]) {
                 const values = data.rows[0].metricValues;
                 setAnalytics({
                     visitors: values[0].value,
                     sessions: values[1].value,
-                    avgDuration: parseFloat(values[2].value), // stored in seconds usually
+                    avgDuration: parseFloat(values[2].value),
                     bounceRate: parseFloat(values[3].value),
                     pagePerSession: parseFloat(values[4].value),
                     newUsers: values[5].value
                 });
             }
         } catch (err: any) {
-            console.error('Analytics fetch error:', err);
-            // Don't set global loading false here, separate loading for analytics
-            setAnalyticsError('Veri çekilemedi. Servis hesabı ayarlarını kontrol edin.');
+            // Silently catch to prevent console pollution
+            setAnalyticsError('Analiz verileri şu an yüklenemiyor.');
+            console.warn('[Analytics] Veri çekme atlandı veya servis kapalı.');
         }
     };
 

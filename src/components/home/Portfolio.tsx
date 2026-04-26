@@ -176,7 +176,11 @@ const Portfolio = () => {
                                 <motion.div
                                     className="h-full bg-orange-500"
                                     initial={{ width: 0 }}
-                                    animate={{ width: `${((currentIndex + 1) / filteredProjects.length) * 100}%` }}
+                                    animate={{ 
+                                        width: filteredProjects.length > 0 
+                                            ? `${((currentIndex + 1) / filteredProjects.length) * 100}%` 
+                                            : '0%' 
+                                    }}
                                 />
                             </div>
                         </div>

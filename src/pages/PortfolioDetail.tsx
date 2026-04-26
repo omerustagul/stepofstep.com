@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Navigate, useNavigate } from 'react-router-dom';
-import { usePortfolio, PortfolioItem } from '../context/PortfolioContext';
+import { usePortfolio, type PortfolioItem } from '../context/PortfolioContext';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle, Loader2 } from 'lucide-react';
 
