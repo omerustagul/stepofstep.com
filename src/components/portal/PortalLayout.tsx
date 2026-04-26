@@ -82,7 +82,7 @@ const PortalLayout = () => {
                             animate={{ x: isSidebarOpen ? 0 : (window.innerWidth >= 768 ? 0 : -300) }}
                             exit={{ x: -300 }}
                             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            className={`fixed md:relative top-0 left-0 w-72 h-full z-50 md:z-auto bg-[rgb(var(--bg-card))] border-r border-[rgb(var(--border-primary))] flex flex-col shadow-2xl md:shadow-none`}
+                            className={`fixed md:relative top-0 left-0 w-58 h-full z-50 md:z-auto bg-[rgb(var(--bg-card))] border-r border-[rgb(var(--border-primary))] flex flex-col shadow-2xl md:shadow-none`}
                         >
                             {/* Logo Area (Mobile Sidebar Header) */}
                             <div className="flex items-center justify-start md:hidden p-4 pb-4 bg-[rgb(var(--bg-card))] border-b border-[rgb(var(--border-primary))]">
@@ -102,8 +102,8 @@ const PortalLayout = () => {
                             </div>
 
                             {/* Desktop Logo Area */}
-                            <div className="hidden md:flex flex-col items-center justify-center py-4 border-b border-[rgb(var(--border-primary))]/50">
-                                <Link to="/" className="flex flex-col items-center gap-3 group">
+                            <div className="hidden md:flex flex-col items-start justify-start py-4 px-4 border-b border-[rgb(var(--border-primary))]/50">
+                                <Link to="/" className="flex flex-col items-start gap-3 group">
                                     {settings.portalLogoUrl || settings.logoUrl ? (
                                         <img src={settings.portalLogoUrl || settings.logoUrl} alt="Logo" className="w-auto h-6 object-contain group-hover:scale-105 transition-transform duration-300" />
                                     ) : (
@@ -147,7 +147,7 @@ const PortalLayout = () => {
                             </nav>
 
                             {/* User Profile & Actions at Bottom */}
-                            <div className="p-4 border-t border-[rgb(var(--border-primary))] space-y-3">
+                            <div className="p-4 border-t border-[rgb(var(--border-primary))] space-y-2">
                                 <button
                                     onClick={() => setUpgradeModalOpen(true)}
                                     className="relative w-full group overflow-hidden rounded-2xl p-[1px]"
@@ -155,7 +155,7 @@ const PortalLayout = () => {
                                     <div className="absolute inset-0 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 border border-orange-300 rounded-[18px] animate-gradient-x" />
                                     <div className="relative gradient-to-r from-orange-500 via-amber-500 to-orange-500 hover:bg-transparent transition-colors duration-300 rounded-2xl px-4 py-3 flex items-center justify-center gap-2">
                                         <Sparkles size={18} className="text-white group-hover:text-white transition-colors animate-pulse" />
-                                        <span className="font-black text-sm text-white group-hover:text-white tracking-wide uppercase">Paket Yükselt</span>
+                                        <span className="font-black text-sm text-white group-hover:text-white">Paket Yükselt</span>
                                     </div>
                                 </button>
 

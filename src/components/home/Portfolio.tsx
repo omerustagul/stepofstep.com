@@ -176,10 +176,10 @@ const Portfolio = () => {
                                 <motion.div
                                     className="h-full bg-orange-500"
                                     initial={{ width: 0 }}
-                                    animate={{ 
-                                        width: filteredProjects.length > 0 
-                                            ? `${((currentIndex + 1) / filteredProjects.length) * 100}%` 
-                                            : '0%' 
+                                    animate={{
+                                        width: filteredProjects.length > 0
+                                            ? `${((currentIndex + 1) / filteredProjects.length) * 100}%`
+                                            : '0%'
                                     }}
                                 />
                             </div>
@@ -274,7 +274,7 @@ const Card = ({ project, index, isTop, onSwipe, onClick }: { project: any, index
                     {/* Floating Tags */}
                     <div className="absolute top-3 left-3 flex flex-wrap gap-1 max-w-[80%]">
                         {((Array.isArray(project.serviceType) ? project.serviceType : (project.serviceType ? [project.serviceType] : (project.category ? [project.category] : []))) as string[]).map((cat, i) => (
-                            <span key={i} className="bg-[rgb(var(--accent-primary))] backdrop-blur-md text-[rgb(var(--bg-card))] text-[8px] md:text-[10px] font-black px-2 md:px-3 py-1 rounded-full shadow-lg border border-[rgb(var(--accent-primary))]/50">
+                            <span key={i} className="bg-[rgb(var(--accent-primary))] backdrop-blur-md text-white text-[8px] md:text-[10px] font-black px-2 md:px-3 py-1 rounded-full shadow-lg border border-[rgb(var(--accent-primary))]/50">
                                 {cat}
                             </span>
                         ))}
