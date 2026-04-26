@@ -5,6 +5,7 @@ import { Mail, Phone, MapPin, Loader2, CheckCircle, XCircle } from 'lucide-react
 import { useTranslation } from 'react-i18next';
 import { isValidName, isValidEmail, isValidPhone } from '../../utils/validation';
 import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../context/AuthContext';
 
 const Contact = () => {
     const { t } = useTranslation();
