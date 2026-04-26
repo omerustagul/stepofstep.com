@@ -130,7 +130,7 @@ const Portfolio = () => {
                                         index={index}
                                         isTop={isTop}
                                         onSwipe={handleSwipe}
-                                        onClick={() => navigate(`/portfolio/${project.id}`)}
+                                        onClick={() => navigate(`/portfolio/${project.slug || project.id}`)}
                                     />
                                 );
                             })}
