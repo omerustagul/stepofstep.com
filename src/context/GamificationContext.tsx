@@ -26,6 +26,7 @@ interface GamificationContextType {
     userProgress: UserProgress;
     loading: boolean;
     isDailyClaimed: boolean;
+    currentStreak: number;
     checkAchievement: (id: string) => Promise<void>;
     claimDailyReward: () => Promise<{ success: boolean; streak: number; reward: number }>;
 }
@@ -44,9 +45,9 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
         xp: 0, level: 1, nextLevelXp: LEVEL_base_XP, progressPercent: 0
     });
     const [isDailyClaimed, setIsDailyClaimed] = useState(false);
+    const [currentStreak, setCurrentStreak] = useState(0);
     const [loading, setLoading] = useState(false);
 
-    // Calculate level metrics
     const calculateProgress = (xp: number, level: number) => {
         const currentLevelBase = (level - 1) * LEVEL_base_XP;
         const nextLevelThreshold = level * LEVEL_base_XP;
@@ -69,26 +70,28 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
         try {
             const today = new Date().toISOString().split('T')[0];
 
-            // Parallel fetch: Achievements, Unlocks, User Stats, and Daily Streak
             const [achResult, unlockResult, userResult, streakResult] = await Promise.all([
                 supabase.from('achievements').select('*'),
                 supabase.from('user_achievements').select('achievement_id, unlocked_at').eq('user_id', user.id),
                 supabase.from('app_users').select('xp, level').eq('id', user.id).maybeSingle(),
-                supabase.from('daily_streaks').select('last_claim_date').eq('user_id', user.id).maybeSingle()
+                supabase.from('daily_streaks').select('last_claim_date, current_streak').eq('user_id', user.id).maybeSingle()
             ]);
 
             if (achResult.error) throw achResult.error;
             
-            // Check daily claim
-            if (streakResult.data?.last_claim_date === today) {
-                setIsDailyClaimed(true);
+            if (streakResult.data) {
+                setCurrentStreak(streakResult.data.current_streak || 0);
+                if (streakResult.data.last_claim_date === today) {
+                    setIsDailyClaimed(true);
+                } else {
+                    setIsDailyClaimed(false);
+                }
             } else {
                 setIsDailyClaimed(false);
+                setCurrentStreak(0);
             }
 
-            // Merge Data
             const unlocksMap = new Map(unlockResult.data?.map((u: any) => [u.achievement_id, u.unlocked_at]));
-
             const merged = (achResult.data || []).map((a: any) => ({
                 ...a,
                 unlocked_at: unlocksMap.get(a.id)
@@ -113,12 +116,9 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
 
     const checkAchievement = async (achievementId: string) => {
         if (!user) return;
-
-        // Check if already unlocked
         if (achievements.find(a => a.id === achievementId && a.unlocked_at)) return;
 
         try {
-            // Unlock
             const { error } = await supabase
                 .from('user_achievements')
                 .insert({ user_id: user.id, achievement_id: achievementId });
@@ -128,7 +128,6 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
                 throw error;
             }
 
-            // Award XP
             const ach = achievements.find(a => a.id === achievementId);
             const reward = ach?.xp_reward || 0;
 
@@ -144,10 +143,7 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
                 setUserProgress(calculateProgress(newXp, newLevel));
             }
 
-            // Update Local State
             setAchievements(prev => prev.map(a => a.id === achievementId ? { ...a, unlocked_at: new Date().toISOString() } : a));
-
-            // Notify
             vibrate('success');
             addNotification({
                 type: 'achievement',
@@ -155,7 +151,6 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
                 message: `${ach?.title || 'Yeni Başarım'}: ${ach?.description}`,
                 link: '/profile'
             });
-
         } catch (error) {
             console.error('Unlock error:', error);
         }
@@ -166,8 +161,6 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
 
         try {
             const today = new Date().toISOString().split('T')[0];
-
-            // Get current streak
             let { data: streakData } = await supabase
                 .from('daily_streaks')
                 .select('*')
@@ -176,10 +169,10 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
 
             if (streakData && streakData.last_claim_date === today) {
                 setIsDailyClaimed(true);
+                setCurrentStreak(streakData.current_streak);
                 return { success: false, streak: streakData.current_streak, reward: 0 };
             }
 
-            // Calculate new streak
             let newStreak = 1;
             if (streakData) {
                 const lastDate = new Date(streakData.last_claim_date);
@@ -191,10 +184,8 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
                 }
             }
 
-            // Reward logic
             const reward = 10 + (Math.min(newStreak, 7) * 5);
 
-            // Upsert Streak
             await supabase
                 .from('daily_streaks')
                 .upsert({
@@ -204,7 +195,6 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
                     total_claims: (streakData?.total_claims || 0) + 1
                 });
 
-            // Add XP
             const newXp = userProgress.xp + reward;
             const newLevel = Math.floor(newXp / LEVEL_base_XP) + 1;
 
@@ -215,6 +205,7 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
 
             setUserProgress(calculateProgress(newXp, newLevel));
             setIsDailyClaimed(true);
+            setCurrentStreak(newStreak);
 
             vibrate('success');
             addNotification({
@@ -224,7 +215,6 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
             });
 
             return { success: true, streak: newStreak, reward };
-
         } catch (error) {
             console.error('Claim error:', error);
             return { success: false, streak: 0, reward: 0 };
@@ -237,6 +227,7 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
             userProgress,
             loading,
             isDailyClaimed,
+            currentStreak,
             checkAchievement,
             claimDailyReward
         }}>

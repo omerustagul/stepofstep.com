@@ -8,6 +8,7 @@ import { supabase } from '../../lib/supabase';
 
 const Contact = () => {
     const { t } = useTranslation();
+    const { user } = useAuth();
 
     const [formData, setFormData] = useState({
         name: '',

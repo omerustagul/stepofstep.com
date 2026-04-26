@@ -5,7 +5,7 @@ import { useGamification } from '../../context/GamificationContext';
 import confetti from 'canvas-confetti';
 
 const DailyReward = () => {
-    const { claimDailyReward, isDailyClaimed } = useGamification();
+    const { claimDailyReward, isDailyClaimed, currentStreak } = useGamification();
     const [loading, setLoading] = useState(false);
     const [rewardInfo, setRewardInfo] = useState<{ streak: number, reward: number } | null>(null);
 
@@ -15,7 +15,6 @@ const DailyReward = () => {
         setLoading(false);
 
         if (result.success) {
-            setClaimed(true);
             setRewardInfo({ streak: result.streak, reward: result.reward });
 
             // Celebration
@@ -40,10 +39,10 @@ const DailyReward = () => {
                 </div>
                 <h3 className="font-bold text-green-800 text-lg">Ödül Alındı!</h3>
                 <p className="text-green-600 font-medium">
-                    {rewardInfo.streak} Günlük Seri Devam Ediyor
+                    {rewardInfo?.streak || currentStreak} Günlük Seri Devam Ediyor
                 </p>
                 <div className="mt-2 inline-block px-3 py-1 bg-green-200 text-green-800 rounded-full text-sm font-bold">
-                    +{rewardInfo.reward} XP
+                    {rewardInfo ? `+${rewardInfo.reward} XP` : 'Yarın Tekrar Gel!'}
                 </div>
             </motion.div>
         );
