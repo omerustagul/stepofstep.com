@@ -60,6 +60,7 @@ import NoiseOverlay from './components/common/NoiseOverlay';
 import AnalyticsInjector from './components/common/AnalyticsInjector';
 import { GlobalSonic } from './components/hero/SonicManager';
 import AdminLogin from './pages/admin/AdminLogin';
+import ScrollToTop from './components/common/ScrollToTop';
 
 
 // Protected Route Component
@@ -273,6 +274,7 @@ function App() {
                     <LoadingProvider>
                       <ToastProvider>
                         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                          <ScrollToTop />
                           <SmoothScroll />
                           <AnalyticsInjector />
                           <NoiseOverlay />

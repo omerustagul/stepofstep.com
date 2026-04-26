@@ -75,16 +75,21 @@ const AdminNotifications = () => {
             let targetUsers: string[] = [];
 
             if (targetType === 'all') {
-                targetUsers = users.map(u => u.auth_id);
+                // Sadece geçerli auth_id'si olan kullanıcıları al
+                targetUsers = users
+                    .filter(u => u.auth_id && u.auth_id.length > 10) 
+                    .map(u => u.auth_id);
             } else {
                 const selectedUser = users.find(u => u.id === selectedUserId);
-                if (selectedUser) {
+                if (selectedUser && selectedUser.auth_id) {
                     targetUsers = [selectedUser.auth_id];
                 }
             }
 
-            // Chunk inserts if too many users (e.g. batches of 50)
-            // But for now simple loop or single batch
+            if (targetUsers.length === 0) {
+                throw new Error('Gönderilecek geçerli bir kullanıcı bulunamadı.');
+            }
+
             const notifications = targetUsers.map(uid => ({
                 user_id: uid,
                 type,

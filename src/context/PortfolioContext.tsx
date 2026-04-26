@@ -164,60 +164,88 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
 
     const addItem = useCallback(async (item: Omit<PortfolioItem, 'id'>) => {
         try {
+            const dbData = {
+                name: item.name || item.title || '',
+                description: item.description || '',
+                category: Array.isArray(item.category) ? item.category : (Array.isArray(item.serviceType) ? item.serviceType : []),
+                image_url: item.image || item.imageUrl || '',
+                logo_url: item.logoUrl || '',
+                slug: item.slug || (item.name || item.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                featured: item.featured || false,
+                client_name: item.clientName || '',
+                challenge: item.challenge || '',
+                solution: item.solution || '',
+                results: item.results || [],
+                gallery_images: item.galleryImages || [],
+                latitude: item.latitude || null,
+                longitude: item.longitude || null
+            };
+
             const { error } = await supabase
                 .from('portfolios')
-                .insert({
-                    name: item.name || item.title,
-                    description: item.description,
-                    category: item.category || item.serviceType,
-                    image_url: item.image || item.imageUrl,
-                    slug: item.slug,
-                    featured: item.featured || false,
-                    logo_url: item.logoUrl || '',
-                    client_name: item.clientName || '',
-                    challenge: item.challenge || '',
-                    solution: item.solution || '',
-                    results: item.results || [],
-                    gallery_images: item.galleryImages || [],
-                    latitude: item.latitude || null,
-                    longitude: item.longitude || null
-                });
+                .insert(dbData);
 
             if (error) throw error;
             await fetchData();
-        } catch (error) {
+        } catch (error: any) {
             console.error('Portfolio ekleme hatası:', error);
+            alert('Portfolyo eklenirken hata: ' + (error.message || 'Yetki hatası'));
             throw error;
         }
     }, [fetchData]);
 
     const updateItem = useCallback(async (id: string, updatedFields: Partial<PortfolioItem>) => {
         try {
-            const { error } = await supabase
+            // Veritabanı şemasına göre alanları eşle
+            const dbData: any = {
+                id: id, // Upsert için ID gerekli
+                updated_at: new Date().toISOString()
+            };
+
+            // Alanları tek tek kontrol et ve varsa ekle
+            if (updatedFields.name !== undefined) dbData.name = updatedFields.name;
+            else if (updatedFields.title !== undefined) dbData.name = updatedFields.title;
+            
+            if (updatedFields.description !== undefined) dbData.description = updatedFields.description;
+            
+            if (updatedFields.category !== undefined) dbData.category = updatedFields.category;
+            else if (updatedFields.serviceType !== undefined) dbData.category = updatedFields.serviceType;
+            
+            if (updatedFields.image_url !== undefined) dbData.image_url = updatedFields.image_url;
+            else if (updatedFields.imageUrl !== undefined) dbData.image_url = updatedFields.imageUrl;
+            else if (updatedFields.image !== undefined) dbData.image_url = updatedFields.image;
+            
+            if (updatedFields.slug !== undefined) dbData.slug = updatedFields.slug;
+            if (updatedFields.featured !== undefined) dbData.featured = updatedFields.featured;
+            if (updatedFields.logoUrl !== undefined) dbData.logo_url = updatedFields.logoUrl;
+            if (updatedFields.logo_url !== undefined) dbData.logo_url = updatedFields.logo_url;
+            if (updatedFields.clientName !== undefined) dbData.client_name = updatedFields.clientName;
+            if (updatedFields.client_name !== undefined) dbData.client_name = updatedFields.client_name;
+            if (updatedFields.challenge !== undefined) dbData.challenge = updatedFields.challenge;
+            if (updatedFields.solution !== undefined) dbData.solution = updatedFields.solution;
+            if (updatedFields.results !== undefined) dbData.results = updatedFields.results;
+            if (updatedFields.galleryImages !== undefined) dbData.gallery_images = updatedFields.galleryImages;
+            if (updatedFields.gallery_images !== undefined) dbData.gallery_images = updatedFields.gallery_images;
+            if (updatedFields.latitude !== undefined) dbData.latitude = updatedFields.latitude;
+            if (updatedFields.longitude !== undefined) dbData.longitude = updatedFields.longitude;
+
+            // 'update' yerine 'upsert' kullanıyoruz. 
+            // Bu sayede kayıt yoksa oluşturur, varsa günceller.
+            const { data, error } = await supabase
                 .from('portfolios')
-                .update({
-                    name: updatedFields.name || updatedFields.title,
-                    description: updatedFields.description,
-                    category: updatedFields.category || updatedFields.serviceType,
-                    image_url: updatedFields.image || updatedFields.imageUrl,
-                    slug: updatedFields.slug,
-                    featured: updatedFields.featured,
-                    logo_url: updatedFields.logoUrl,
-                    client_name: updatedFields.clientName,
-                    challenge: updatedFields.challenge,
-                    solution: updatedFields.solution,
-                    results: updatedFields.results,
-                    gallery_images: updatedFields.galleryImages,
-                    latitude: updatedFields.latitude,
-                    longitude: updatedFields.longitude,
-                    updated_at: new Date().toISOString()
-                })
-                .eq('id', id);
+                .upsert(dbData, { onConflict: 'id' })
+                .select();
 
             if (error) throw error;
+            
+            if (!data || data.length === 0) {
+                throw new Error('Kayıt işlemi başarısız oldu.');
+            }
+
             await fetchData();
-        } catch (error) {
+        } catch (error: any) {
             console.error('Portfolio güncelleme hatası:', error);
+            alert('Portfolyo güncellenirken hata: ' + (error.message || 'Yetki hatası'));
             throw error;
         }
     }, [fetchData]);

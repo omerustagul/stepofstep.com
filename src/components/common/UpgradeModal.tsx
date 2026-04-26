@@ -113,7 +113,7 @@ const UpgradeModal = ({ isOpen, onClose }: UpgradeModalProps) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        className="absolute inset-0 bg-[rgb(var(--bg-secondary))]/80 backdrop-blur-sm"
                     />
 
                     <motion.div
@@ -134,7 +134,7 @@ const UpgradeModal = ({ isOpen, onClose }: UpgradeModalProps) => {
                                     </button>
                                 </div>
 
-                                <div className="p-8 md:p-10 overflow-y-auto custom-scrollbar">
+                                <div className="p-2 md:p-4 overflow-y-auto custom-scrollbar">
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
                                         {plansLoading ? (
                                             <div className="col-span-3 py-32 flex flex-col items-center justify-center gap-4 text-[rgb(var(--text-primary))]">

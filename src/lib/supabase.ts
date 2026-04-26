@@ -43,7 +43,6 @@ if (!window.__SUPABASE_CLIENT__) {
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: true,
-      // Use our custom lock-bypass fetch
       storageKey: 'step_auth_token'
     },
     global: {

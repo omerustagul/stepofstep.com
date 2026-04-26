@@ -83,6 +83,9 @@ const PlanManager = () => {
 
     const handleSavePlans = async () => {
         setSaving(true);
+        let successCount = 0;
+        let failCount = 0;
+
         try {
             for (const plan of membershipPlans) {
                 const { error } = await supabase
@@ -91,16 +94,28 @@ const PlanManager = () => {
                         name: plan.name,
                         price_monthly: plan.price_monthly,
                         features: JSON.stringify(plan.features),
-                        is_popular: plan.is_popular
+                        is_popular: plan.is_popular,
+                        updated_at: new Date().toISOString()
                     })
                     .eq('id', plan.id);
 
-                if (error) throw error;
+                if (error) {
+                    console.error(`Error saving plan ${plan.name}:`, error);
+                    failCount++;
+                } else {
+                    successCount++;
+                }
             }
-            alert('Plan ayarları kaydedildi!');
-        } catch (err) {
+            
+            if (failCount === 0) {
+                alert('Tüm plan ayarları başarıyla kaydedildi!');
+            } else {
+                alert(`${successCount} plan kaydedildi, ${failCount} plan kaydedilemedi. Yetkilerinizi kontrol edin.`);
+            }
+            fetchPlans();
+        } catch (err: any) {
             console.error('Plan save error:', err);
-            alert('Planlar kaydedilirken bir hata oluştu.');
+            alert('Beklenmedik bir hata oluştu: ' + err.message);
         } finally {
             setSaving(false);
         }

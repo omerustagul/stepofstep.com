@@ -174,7 +174,7 @@ const BookingForm = ({ selectedDate, onSubmit, onBack, isSubmitting }: BookingFo
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex-1 bg-gradient-to-r from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-light))] text-white py-3 rounded-xl font-bold shadow-lg shadow-[rgb(var(--accent-primary))]/25 hover:shadow-[rgb(var(--accent-primary))]/40 transition-all active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                        className="flex-1 bg-gradient-to-r from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-hover))] text-white py-3 rounded-xl font-bold shadow-lg shadow-[rgb(var(--accent-primary))]/25 hover:shadow-[rgb(var(--accent-primary))]/40 transition-all active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                     >
                         {isSubmitting ? (
                             <>

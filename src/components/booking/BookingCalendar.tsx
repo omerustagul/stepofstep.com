@@ -165,7 +165,7 @@ const BookingCalendar = ({ onSelectSlot }: BookingCalendarProps) => {
     return (
         <div className="flex flex-col md:flex-row h-auto max-h-[700px] overflow-hidden">
             {/* Calendar Section */}
-            <div className="p-6 md:p-8 flex-1 min-w-[100px] md:min-w-[500px] bg-[rgb(var(--bg-primary))]">
+            <div className="p-3 md:p-2 flex-1 min-w-[100px] md:min-w-[500px] bg-[rgb(var(--bg-primary))]">
                 <div className="flex items-center gap-3 justify-start mb-6">
                     <h3 className="text-xl font-bold text-[rgb(var(--text-secondary))] capitalize tracking-tight">
                         {format(currentDate, 'MMMM yyyy', { locale: tr })}
@@ -211,7 +211,7 @@ const BookingCalendar = ({ onSelectSlot }: BookingCalendarProps) => {
                                 className={`
                                 relative aspect-square mx-auto flex items-center justify-center rounded-2xl text-sm font-bold transition-all w-full max-w-[48px]
                                 ${isSelected
-                                        ? 'bg-[rgb(var(--accent-primary))] text-[rgb(var(--text-primary))] shadow-xl shadow-zinc-900/20 scale-105'
+                                        ? 'bg-[rgb(var(--accent-primary))] text-[rgb(var(--bg-card))] shadow-xl shadow-zinc-900/20 scale-105'
                                         : ''
                                     }
                                 ${!isSelected && !isPastDate && !isDisabled
@@ -249,14 +249,14 @@ const BookingCalendar = ({ onSelectSlot }: BookingCalendarProps) => {
 
             {/* Time Slots Section */}
             <div className="w-full md:w-80 bg-[rgb(var(--bg-secondary))] border-t md:border-t-0 md:border-l border-[rgb(var(--border-primary))] flex flex-col h-[300px] md:h-auto">
-                <div className="p-6 pb-2">
+                <div className="p-3 pb-2">
                     <h4 className="text-sm font-bold text-[rgb(var(--text-primary))] uppercase tracking-wide flex items-center gap-2">
                         <Clock size={16} className="text-[rgb(var(--accent-primary))]" />
                         {selectedDate ? format(selectedDate, 'd MMMM', { locale: tr }) : 'Tarih Seçin'}
                     </h4>
                 </div>
 
-                <div className="flex-1 overflow-y-auto px-6 pt-3 pb-6 custom-scrollbar">
+                <div className="flex-1 overflow-y-auto px-3 pt-3 pb-6 custom-scrollbar">
                     <AnimatePresence mode="wait">
                         {loading ? (
                             <div className="flex items-center justify-center h-40">

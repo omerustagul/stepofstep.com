@@ -622,23 +622,27 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
                                                 const midAngle = startAngle + segmentAngle / 2;
                                                 const textRad = (midAngle * Math.PI) / 180;
                                                 // Move text to the middle of the segment for better centering
-                                                const textRadius = 65;
+                                                // Move text a bit further out where the triangle is wider
+                                                const textRadius = 72;
                                                 const textX = 100 + textRadius * Math.cos(textRad);
                                                 const textY = 100 + textRadius * Math.sin(textRad);
 
-                                                // Improved Smart Text Wrapping Logic - Optimized for readability
-                                                const label = segment.label;
+                                                // Improved Smart Text Wrapping Logic
+                                                const label = segment.label || '';
                                                 const words = label.split(' ');
-                                                const maxCharsPerLine = 10; // Reduced for better containment
+                                                
+                                                // Dynamic character limit based on segment width (angle)
+                                                // Narrower triangles need smaller limits
+                                                const charsPerLine = Math.floor(segmentAngle / 4); 
+                                                const maxCharsPerLine = Math.max(5, Math.min(14, charsPerLine));
+                                                
                                                 let lines: string[] = [];
                                                 let currentLine = "";
 
                                                 words.forEach((word: string) => {
-                                                    // Handle single words longer than maxCharsPerLine
-                                                    if (word.length > maxCharsPerLine) {
-                                                        if (currentLine) lines.push(currentLine);
+                                                    // If a single word is longer than max, we might need to split it or just accept it
+                                                    if (word.length > maxCharsPerLine && !currentLine) {
                                                         lines.push(word);
-                                                        currentLine = "";
                                                     } else if ((currentLine + (currentLine ? " " : "") + word).length <= maxCharsPerLine) {
                                                         currentLine += (currentLine ? " " : "") + word;
                                                     } else {
@@ -647,34 +651,32 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
                                                     }
                                                 });
                                                 if (currentLine) lines.push(currentLine);
+                                                
+                                                // Max 4 lines to avoid vertical overflow
+                                                lines = lines.slice(0, 4);
 
-                                                // Limit to max 3 lines for safety
-                                                lines = lines.slice(0, 3);
+                                                // Base font size scaling - slightly larger as requested
+                                                let baseFontSize = 14;
+                                                if (segments.length > 6) baseFontSize = 12;
+                                                if (segments.length > 10) baseFontSize = 10;
+                                                if (segments.length > 14) baseFontSize = 8;
 
-                                                // Dynamic Font Size - Adaptive based on line count and total characters
-                                                let fontSize = 12.5; 
-                                                if (lines.length === 2) fontSize = 10.5;
-                                                if (lines.length >= 3) fontSize = 8.5;
+                                                // Adjust for line count and longest line
+                                                const longestLine = Math.max(...lines.map(l => l.length));
+                                                let fontSize = baseFontSize;
+                                                
+                                                if (longestLine > 8) fontSize *= 0.9;
+                                                if (longestLine > 10) fontSize *= 0.8;
+                                                
+                                                if (lines.length === 2) fontSize *= 0.95;
+                                                if (lines.length >= 3) fontSize *= 0.85;
 
-                                                // More aggressive scaling for very long labels
-                                                const totalChars = label.length;
-                                                if (totalChars > 15) fontSize *= 0.95;
-                                                if (totalChars > 20) fontSize *= 0.9;
-                                                if (totalChars > 25) fontSize *= 0.85;
+                                                fontSize = Math.max(7.5, fontSize);
 
-                                                // Ensure a minimum readable font size
-                                                fontSize = Math.max(7, fontSize);
-
-                                                // VISUAL LOGIC:
-                                                // If we have a winner, everyone else dims.
-                                                // The winner stays bright and maybe scales slightly or just holds focus.
-                                                // The scale transform in SVG is tricky around a center, so we'll rely on opacity/dimming for focus.
                                                 const isWinner = winningSegmentIndex === i;
                                                 const hasWinner = winningSegmentIndex !== null;
-
-                                                // "Focus Effect": Dim others if there is a winner
                                                 const opacity = hasWinner && !isWinner ? 0.4 : 1;
-                                                const filter = isWinner ? 'brightness(1.2)' : 'none';
+                                                const filter = isWinner ? 'brightness(1.2) contrast(1.1)' : 'none';
 
                                                 return (
                                                     <g key={i}
@@ -682,14 +684,14 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
                                                         style={{
                                                             opacity,
                                                             filter,
-                                                            transformOrigin: '100px 100px', // Center of SVG
-                                                            transform: isWinner ? 'scale(1.02)' : 'scale(1)' // Subtle pop
+                                                            transformOrigin: '100px 100px',
+                                                            transform: isWinner ? 'scale(1.03)' : 'scale(1)'
                                                         }}
                                                     >
                                                         <path
                                                             d={`M 100 100 L ${x1} ${y1} A 100 100 0 ${segmentAngle > 180 ? 1 : 0} 1 ${x2} ${y2} Z`}
                                                             fill={segment.color}
-                                                            stroke="rgba(0,0,0,0.2)"
+                                                            stroke="rgba(0,0,0,0.15)"
                                                             strokeWidth="0.5"
                                                         />
                                                         <text
@@ -702,22 +704,25 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
                                                             dominantBaseline="middle"
                                                             transform={`rotate(${midAngle + 90}, ${textX}, ${textY})`}
                                                             style={{
-                                                                textShadow: '0 1px 4px rgba(0,0,0,0.6)',
-                                                                letterSpacing: '-0.02em'
+                                                                textShadow: '0 1px 3px rgba(0,0,0,0.5)',
+                                                                letterSpacing: '-0.02em',
+                                                                transition: 'all 0.3s ease',
+                                                                pointerEvents: 'none'
                                                             }}
                                                         >
                                                             {lines.map((line, idx) => (
                                                                 <tspan
                                                                     key={idx}
                                                                     x={textX}
-                                                                    dy={idx === 0 ? `-${(lines.length - 1) * (fontSize * 0.5)}px` : `${fontSize * 1.1}px`}
+                                                                    dy={idx === 0 
+                                                                        ? `-${(lines.length - 1) * (fontSize * 0.55)}px` 
+                                                                        : `${fontSize * 1.1}px`}
                                                                 >
                                                                     {line}
                                                                 </tspan>
                                                             ))}
                                                         </text>
-                                                        {/* SEGMENT PINS (Mechanics) */}
-                                                        <circle cx={x1} cy={y1} r="1.5" fill="#d4d4d8" />
+                                                        <circle cx={x1} cy={y1} r="1.2" fill="rgba(255,255,255,0.3)" />
                                                     </g>
                                                 );
                                             })}

@@ -143,7 +143,7 @@ const Portfolio = () => {
                             </div>
                         )}
                         {currentIndex >= filteredProjects.length && filteredProjects.length > 0 && (
-                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-[rgb(var(--bg-card))] rounded-[2rem] border border-[rgb(var(--border-primary))] shadow-xl">
+                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
                                 <SparklesIcon className="w-12 h-12 text-orange-500 mb-4 animate-pulse" />
                                 <h3 className="text-2xl font-black mb-2">Hepsini İncelediniz!</h3>
                                 <p className="text-zinc-500 mb-6">Bu kategorideki tüm projelerimizi gördünüz.</p>
@@ -256,11 +256,11 @@ const Card = ({ project, index, isTop, onSwipe, onClick }: { project: any, index
             // Updates when not top card
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
 
-            className={`absolute top-0 left-0 w-full h-full bg-[rgb(var(--bg-card))] rounded-[2.5rem] p-4 shadow-2xl border border-[rgb(var(--border-primary))] cursor-grab active:cursor-grabbing select-none origin-bottom`}
+            className={`absolute top-0 left-0 w-full h-full bg-[rgb(var(--bg-card))] rounded-3xl p-3 shadow-2xl border border-[rgb(var(--border-primary))] cursor-grab active:cursor-grabbing select-none origin-bottom`}
         >
             <div className="relative h-full flex flex-col">
                 {/* Image Area */}
-                <div className="relative w-full aspect-[1/1] md:aspect-[4/3] rounded-[2rem] overflow-hidden mb-6 bg-[rgb(var(--bg-card))]">
+                <div className="relative w-full aspect-[1/1] md:aspect-[4/3] rounded-2xl overflow-hidden mb-6 bg-[rgb(var(--bg-card))]">
                     <img
                         src={project.image || project.imageUrl}
                         alt={project.name}
@@ -268,9 +268,9 @@ const Card = ({ project, index, isTop, onSwipe, onClick }: { project: any, index
                     />
 
                     {/* Floating Tags */}
-                    <div className="absolute top-4 left-4 flex flex-wrap gap-1 max-w-[80%]">
+                    <div className="absolute top-3 left-3 flex flex-wrap gap-1 max-w-[80%]">
                         {((Array.isArray(project.serviceType) ? project.serviceType : (project.serviceType ? [project.serviceType] : (project.category ? [project.category] : []))) as string[]).map((cat, i) => (
-                            <span key={i} className="bg-[rgb(var(--accent-primary))] backdrop-blur-md text-[rgb(var(--text-primary))] text-[8px] md:text-[10px] font-black uppercase tracking-wider px-2 md:px-3 py-1 rounded-full shadow-lg border border-[rgb(var(--accent-primary))]/50">
+                            <span key={i} className="bg-[rgb(var(--accent-primary))] backdrop-blur-md text-[rgb(var(--bg-card))] text-[8px] md:text-[10px] font-black px-2 md:px-3 py-1 rounded-full shadow-lg border border-[rgb(var(--accent-primary))]/50">
                                 {cat}
                             </span>
                         ))}
@@ -289,14 +289,14 @@ const Card = ({ project, index, isTop, onSwipe, onClick }: { project: any, index
                     <div>
                         <div className="flex justify-between items-start mb-2">
                             <div>
-                                <h3 className="text-2xl font-black text-[rgb(var(--text-primary))] leading-tight mb-1">{project.name || project.title}</h3>
-                                <p className="text-xs font-bold text-orange-500 uppercase tracking-widest">{project.clientName || 'GİZLİ PROJE'}</p>
+                                <h3 className="text-xl font-black text-[rgb(var(--text-primary))] leading-tight mb-1">{project.name || project.title}</h3>
+                                <p className="text-sm font-medium text-orange-500">{project.clientName || 'GİZLİ PROJE'}</p>
                             </div>
                             <div className="w-10 h-10 rounded-full bg-[rgb(var(--bg-tertiary))] text-[rgb(var(--text-primary))] flex items-center justify-center">
                                 <ArrowUpRight size={20} />
                             </div>
                         </div>
-                        <p className="text-[rgb(var(--text-secondary))] text-sm leading-relaxed line-clamp-3">
+                        <p className="text-[rgb(var(--text-secondary))] text-sm font-light">
                             {project.description}
                         </p>
                     </div>

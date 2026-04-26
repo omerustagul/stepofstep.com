@@ -67,7 +67,14 @@ const WheelManager = () => {
                 .order('created_at', { ascending: true });
 
             if (rewardsError) throw rewardsError;
-            setRewards(rewardsData || []);
+            
+            // Map database field to state field 'type' (handling both possible column names)
+            const formattedRewards = (rewardsData || []).map((r: any) => ({
+                ...r,
+                type: r.type || r.reward_type // Handle both possible DB column names
+            }));
+            
+            setRewards(formattedRewards);
 
             // Fetch recent spins
             const { data: spinsData, error: spinsError } = await supabase
@@ -140,35 +147,52 @@ const WheelManager = () => {
 
     const handleSave = async () => {
         setSaving(true);
+        let successCount = 0;
+        let failCount = 0;
+
         try {
             for (const reward of rewards) {
                 const isNew = reward.id.startsWith('new-');
-                // Clean data for DB
-                const dbData = {
+                
+                // CRITICAL: Database schema alignment
+                // 1. 'type' must map to 'reward_type' if the SQL script was run
+                // 2. 'value' must be a string if the SQL script was run to convert it to TEXT
+                // 3. Optional fields should be handled safely
+                const dbData: any = {
                     label: reward.label,
-                    type: reward.type,
-                    value: Number(reward.value) || 0,
+                    reward_type: reward.type, 
+                    value: reward.value ? String(reward.value) : "", 
+                    reward_value: reward.value ? String(reward.value) : "", 
                     probability: Number(reward.probability) || 0,
-                    color: reward.color,
-                    text_color: reward.text_color,
+                    color: reward.color || '#FF6B35',
+                    text_color: reward.text_color || '#ffffff',
                     is_active: reward.is_active,
-                    reward_value: reward.reward_value,
-                    file_url: reward.file_url
+                    file_url: reward.file_url || null
                 };
 
-                if (isNew) {
-                    const { error } = await supabase.from('wheel_rewards').insert(dbData);
-                    if (error) throw error;
+                const { error } = isNew
+                    ? await supabase.from('wheel_rewards').insert(dbData)
+                    : await supabase.from('wheel_rewards').update(dbData).eq('id', reward.id);
+
+                if (error) {
+                    console.error(`Error saving reward ${reward.label}:`, error);
+                    // Provide visual feedback for the specific field error
+                    alert(`"${reward.label}" kaydedilemedi!\n\nVeritabanı Hatası: ${error.message}\n${error.details ? 'Detay: ' + error.details : ''}`);
+                    failCount++;
                 } else {
-                    const { error } = await supabase.from('wheel_rewards').update(dbData).eq('id', reward.id);
-                    if (error) throw error;
+                    successCount++;
                 }
             }
-            alert('Tüm değişiklikler kaydedildi!');
+
+            if (failCount === 0) {
+                alert('Tüm ödüller başarıyla kaydedildi!');
+            } else {
+                alert(`${successCount} ödül kaydedildi, ${failCount} ödül hata verdi. Lütfen yukarıdaki hataları kontrol edin.`);
+            }
             fetchData();
-        } catch (err) {
+        } catch (err: any) {
             console.error('Save error:', err);
-            alert('Kaydetme işlemi sırasında bir hata oluştu.');
+            alert('Kayıt işlemi sırasında bir hata oluştu.');
         } finally {
             setSaving(false);
         }
@@ -243,7 +267,7 @@ const WheelManager = () => {
                     </h1>
                     <p className="text-zinc-500">Çark ödüllerini ve kullanım geçmişini yönetin.</p>
                 </div>
-                <div className="flex items-center gap-2 h-10 bg-[rgb(var(--bg-secondary))]/10 border border-[rgb(var(--border-primary))]/20 p-1 rounded-2xl">
+                <div className="flex items-center gap-2 h-10 bg-[rgb(var(--bg-tertiary))] border border-[rgb(var(--border-primary))] p-1 rounded-2xl">
                     <button
                         onClick={() => setActiveTab('rewards')}
                         className={`h-8 flex items-center justify-center px-4 py-2 rounded-xl font-medium transition-all ${activeTab === 'rewards' ? 'bg-white text-orange-600 shadow-sm' : 'text-zinc-500 hover:text-zinc-700'}`}

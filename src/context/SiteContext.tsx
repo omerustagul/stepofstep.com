@@ -249,15 +249,13 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
         const updated = { ...settings, ...newSettings };
         setSettings(updated);
 
-        // LocalStorage'a da kaydet (yedek)
+        // Update LocalStorage (Backup)
         localStorage.setItem('siteSettings', JSON.stringify(updated));
-
-
 
         try {
             if (updated.id) {
-                // Güncelle
-                await supabase
+                // Update existing
+                const { error } = await supabase
                     .from('site_settings')
                     .update({
                         title: updated.title || '',
@@ -271,9 +269,11 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
                         updated_at: new Date().toISOString()
                     })
                     .eq('id', updated.id);
+                
+                if (error) throw error;
             } else {
-                // Yeni kayıt
-                const { data } = await supabase
+                // Insert new
+                const { data, error } = await supabase
                     .from('site_settings')
                     .insert({
                         title: updated.title,
@@ -288,18 +288,20 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
                     .select()
                     .single();
 
+                if (error) throw error;
                 if (data) {
                     setSettings(prev => ({ ...prev, id: data.id }));
                 }
             }
+            console.log('[SiteContext] Settings updated successfully');
         } catch (error: any) {
-            console.error('Site ayarları kaydetme hatası:', error);
-            // Revert optimistic update if needed, but for now just alert
-            alert('Ayarlar kaydedilirken bir hata oluştu: ' + (error.message || 'Bilinmeyen hata'));
-            // Optionally force refresh to sync back with server state
-            // fetchData();
+            console.error('[SiteContext] Update error:', error);
+            alert('Ayarlar kaydedilirken bir hata oluştu: ' + (error.message || 'Yetki hatası (RLS)'));
+            // Re-fetch to sync with DB
+            fetchData();
+            throw error; // Re-throw so the caller (like SiteSettings) knows it failed
         }
-    }, [settings]);
+    }, [settings, fetchData]);
 
     const getPagePath = useCallback((pageName: string, defaultPath: string) => {
         const page = pageSEO.find(p => p.name === pageName);

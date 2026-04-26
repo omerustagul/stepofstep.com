@@ -528,33 +528,41 @@ const SiteSettings = () => {
         e.preventDefault();
         showLoading('Ayarlar kaydediliyor...');
 
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        await updateSettings(formData);
-
-        // Save SEO to DB
         try {
-            for (const page of pageSEO) {
-                const { error } = await supabase
+            // Fake delay for UX
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            // 1. Update Main Settings
+            await updateSettings(formData);
+
+            // 2. Save SEO to DB (Optimized: Batch Upsert)
+            if (pageSEO.length > 0) {
+                const seoDataToUpsert = pageSEO.map(page => ({
+                    path: page.path,
+                    name: page.name,
+                    title: page.title || '',
+                    description: page.description || '',
+                    updated_at: new Date().toISOString()
+                }));
+
+                const { error: seoError } = await supabase
                     .from('site_seo')
-                    .upsert({
-                        path: page.path,
-                        name: page.name,
-                        title: page.title,
-                        description: page.description,
-                        updated_at: new Date().toISOString()
-                    });
-                if (error) console.error(`Error saving SEO for ${page.path}:`, error);
+                    .upsert(seoDataToUpsert, { onConflict: 'path' });
+
+                if (seoError) {
+                    console.error('[SiteSettings] SEO batch save error:', seoError);
+                }
             }
-        } catch (err) {
-            console.error('SEO save error:', err);
+
+            localStorage.setItem('step_page_seo', JSON.stringify(pageSEO));
+            setIsSaved(true);
+            setTimeout(() => setIsSaved(false), 3000);
+        } catch (err: any) {
+            console.error('[SiteSettings] Submit error:', err);
+            alert('Ayarlar kaydedilirken bir hata oluştu: ' + (err.message || String(err)));
+        } finally {
+            hideLoading();
         }
-
-        localStorage.setItem('step_page_seo', JSON.stringify(pageSEO));
-
-        hideLoading();
-        setIsSaved(true);
-        setTimeout(() => setIsSaved(false), 2000);
     };
 
     const currentPageSEO = pageSEO.find(p => p.path === selectedPage) || pageSEO[0];

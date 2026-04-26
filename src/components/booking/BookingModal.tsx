@@ -98,7 +98,7 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={handleClose}
-                        className="glass-panel fixed inset-0 bg-black/30 backdrop-blur-sm z-[100] flex items-center justify-center p-8 md:p-4 overflow-y-auto"
+                        className="glass-panel fixed inset-0 bg-black/30 backdrop-blur-sm z-[100] flex items-center justify-center p-4 overflow-y-auto"
                     >
                         {/* Modal Container */}
                         <motion.div
@@ -106,7 +106,7 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.9, opacity: 0, y: 20 }}
                             onClick={e => e.stopPropagation()}
-                            className="relative w-auto max-w-4xl bg-[rgb(var(--bg-primary))] backdrop-blur-xl border border-[rgb(var(--border-primary))] shadow-2xl rounded-[2.5rem] overflow-hidden"
+                            className="relative w-full max-w-4xl bg-[rgb(var(--bg-primary))] backdrop-blur-xl border border-[rgb(var(--border-primary))] shadow-2xl rounded-3xl overflow-hidden"
                         >
                             <button
                                 onClick={handleClose}

@@ -139,7 +139,7 @@ const MobileNavbar = () => {
     };
 
     return (
-        <div className={`md:hidden fixed bottom-6 left-6 right-6 z-50 transition-transform duration-300 ${isVisible ? 'translate-y-0' : 'translate-y-[150%]'}`}>
+        <div className={`md:hidden fixed bottom-3 left-6 right-6 z-50 transition-transform duration-300 ${isVisible ? 'translate-y-0' : 'translate-y-[150%]'}`}>
             <div className="h-16 glass-panel rounded-3xl bg-[rgb(var(--bg-card))]/50 backdrop-blur-[6px] gap-1 border border-[rgb(var(--border-primary))] p-2 flex justify-between items-center px-2">
                 {navItems.map((item, index) => {
                     const isActive = isItemActive(item);

@@ -82,7 +82,7 @@ const AdminLogin = () => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="admin@stepofstep.com"
-                                    className="w-full h-12 bg-white/[0.03] border border-white/5 rounded-xl pl-12 pr-4 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500/50 focus:bg-white/[0.05] transition-all"
+                                    className="w-full h-12 bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border-primary))] rounded-xl pl-12 pr-4 text-[rgb(var(--text-primary))] placeholder:text-zinc-600 focus:outline-none focus:border-orange-500/50 focus:bg-white/[0.05] transition-all"
                                     required
                                 />
                             </div>
@@ -97,7 +97,7 @@ const AdminLogin = () => {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
-                                    className="w-full h-12 bg-white/[0.03] border border-white/5 rounded-xl pl-12 pr-4 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500/50 focus:bg-white/[0.05] transition-all"
+                                    className="w-full h-12 bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border-primary))] rounded-xl pl-12 pr-4 text-[rgb(var(--text-primary))] placeholder:text-zinc-600 focus:outline-none focus:border-orange-500/50 focus:bg-white/[0.05] transition-all"
                                     required
                                 />
                             </div>

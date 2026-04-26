@@ -94,7 +94,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     await new Promise(resolve => setTimeout(resolve, 800));
                     return fetchUserProfile(authUser, retries - 1);
                 }
-                console.error('[Auth] Profile fetch error:', profileError);
+                console.error('[Auth] Profile fetch error:', {
+                    code: profileError.code,
+                    message: profileError.message,
+                    details: profileError.details,
+                    hint: profileError.hint
+                });
             }
 
             if (profile) {
@@ -121,7 +126,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const defaultRole = isAdmin ? 'admin' : 'user';
 
             // Create new profile record
-            const newId = crypto.randomUUID();
+            const generateUUID = () => {
+                if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+                    return crypto.randomUUID();
+                }
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            };
+
+            const newId = generateUUID();
             const { data: newProfile, error: insertError } = await supabase
                 .from('app_users')
                 .insert({
