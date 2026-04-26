@@ -246,8 +246,7 @@ export const GlobalSonic = () => {
 
     // Scroll Logic with improved safety
     useEffect(() => {
-        let lastScrollTime = Date.now();
-        let scrollTimeout: NodeJS.Timeout;
+        let scrollTimeout: ReturnType<typeof setTimeout>;
 
         const handleScroll = () => {
             const currentScrollY = window.scrollY;

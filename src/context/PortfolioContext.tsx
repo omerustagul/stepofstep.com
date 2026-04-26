@@ -211,21 +211,17 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
             if (updatedFields.category !== undefined) dbData.category = updatedFields.category;
             else if (updatedFields.serviceType !== undefined) dbData.category = updatedFields.serviceType;
             
-            if (updatedFields.image_url !== undefined) dbData.image_url = updatedFields.image_url;
-            else if (updatedFields.imageUrl !== undefined) dbData.image_url = updatedFields.imageUrl;
+            if (updatedFields.imageUrl !== undefined) dbData.image_url = updatedFields.imageUrl;
             else if (updatedFields.image !== undefined) dbData.image_url = updatedFields.image;
             
             if (updatedFields.slug !== undefined) dbData.slug = updatedFields.slug;
             if (updatedFields.featured !== undefined) dbData.featured = updatedFields.featured;
             if (updatedFields.logoUrl !== undefined) dbData.logo_url = updatedFields.logoUrl;
-            if (updatedFields.logo_url !== undefined) dbData.logo_url = updatedFields.logo_url;
             if (updatedFields.clientName !== undefined) dbData.client_name = updatedFields.clientName;
-            if (updatedFields.client_name !== undefined) dbData.client_name = updatedFields.client_name;
             if (updatedFields.challenge !== undefined) dbData.challenge = updatedFields.challenge;
             if (updatedFields.solution !== undefined) dbData.solution = updatedFields.solution;
             if (updatedFields.results !== undefined) dbData.results = updatedFields.results;
             if (updatedFields.galleryImages !== undefined) dbData.gallery_images = updatedFields.galleryImages;
-            if (updatedFields.gallery_images !== undefined) dbData.gallery_images = updatedFields.gallery_images;
             if (updatedFields.latitude !== undefined) dbData.latitude = updatedFields.latitude;
             if (updatedFields.longitude !== undefined) dbData.longitude = updatedFields.longitude;
 
