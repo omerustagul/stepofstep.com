@@ -186,21 +186,22 @@ const WheelOfFortune = ({ onClose }: WheelOfFortuneProps) => {
                 if (spins && spins.length > 0) {
                     const lastSpin = new Date(spins[0].created_at);
 
-                    // Logic: Reset every Friday at 00:00
-                    // Calculate the most recent Friday at 00:00
+                    // Logic: Reset every Monday at 00:00
                     const now = new Date();
-                    const currentDay = now.getDay(); // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
-                    const daysSinceFriday = (currentDay + 7 - 5) % 7;
-                    const lastFriday = new Date(now);
-                    lastFriday.setHours(0, 0, 0, 0);
-                    lastFriday.setDate(now.getDate() - daysSinceFriday);
+                    const currentDay = now.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+                    
+                    // Calculate the most recent Monday at 00:00
+                    const daysSinceMonday = (currentDay + 6) % 7;
+                    const lastMonday = new Date(now);
+                    lastMonday.setHours(0, 0, 0, 0);
+                    lastMonday.setDate(now.getDate() - daysSinceMonday);
 
-                    // If last spin was AFTER the most recent Friday, then user has used their right for this week
-                    if (lastSpin >= lastFriday && user.role !== 'admin') {
+                    // If last spin was AFTER the most recent Monday, user has used their right
+                    if (lastSpin >= lastMonday && user.role !== 'admin') {
                         setCanSpin(false);
-                        const nextFriday = new Date(lastFriday);
-                        nextFriday.setDate(lastFriday.getDate() + 7);
-                        setNextSpinDate(nextFriday);
+                        const nextMonday = new Date(lastMonday);
+                        nextMonday.setDate(lastMonday.getDate() + 7);
+                        setNextSpinDate(nextMonday);
                     }
                 }
             } else {

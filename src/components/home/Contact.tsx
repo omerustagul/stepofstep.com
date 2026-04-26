@@ -48,7 +48,8 @@ const Contact = () => {
                         email: formData.email,
                         phone: formData.phone,
                         message: formData.message,
-                        status: 'new'
+                        status: 'new',
+                        user_id: user?.id // Link to user if logged in
                     });
 
                 if (error) throw error;

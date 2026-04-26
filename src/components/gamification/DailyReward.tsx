@@ -5,9 +5,8 @@ import { useGamification } from '../../context/GamificationContext';
 import confetti from 'canvas-confetti';
 
 const DailyReward = () => {
-    const { claimDailyReward } = useGamification();
+    const { claimDailyReward, isDailyClaimed } = useGamification();
     const [loading, setLoading] = useState(false);
-    const [claimed, setClaimed] = useState(false);
     const [rewardInfo, setRewardInfo] = useState<{ streak: number, reward: number } | null>(null);
 
     const handleClaim = async () => {
@@ -29,7 +28,7 @@ const DailyReward = () => {
         }
     };
 
-    if (claimed && rewardInfo) {
+    if (isDailyClaimed) {
         return (
             <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}

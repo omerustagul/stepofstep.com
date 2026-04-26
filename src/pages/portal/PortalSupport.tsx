@@ -210,25 +210,35 @@ const SupportMessages = () => {
     const fetchMessages = async () => {
         if (!user?.email) return;
         setLoading(true);
-        const { data } = await supabase
-            .from('contact_messages')
-            .select(`
-                *,
-                replies:message_replies(*)
-            `)
-            .eq('email', user.email)
-            .order('created_at', { ascending: false });
+        
+        try {
+            // Fetch messages where user_id matches OR email matches
+            // We use .or() for flexible fetching of both linked and unlinked messages
+            const { data, error } = await supabase
+                .from('contact_messages')
+                .select(`
+                    *,
+                    replies:message_replies(*)
+                `)
+                .or(`user_id.eq.${user.id},email.eq.${user.email}`)
+                .order('created_at', { ascending: false });
 
-        if (data) {
-            const processedData = data.map((msg: any) => ({
-                ...msg,
-                replies: msg.replies?.sort((a: Reply, b: Reply) =>
-                    new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-                ) || []
-            }));
-            setMessages(processedData);
+            if (error) throw error;
+
+            if (data) {
+                const processedData = data.map((msg: any) => ({
+                    ...msg,
+                    replies: msg.replies?.sort((a: Reply, b: Reply) =>
+                        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+                    ) || []
+                }));
+                setMessages(processedData);
+            }
+        } catch (error) {
+            console.error('Fetch messages error:', error);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     useEffect(() => {

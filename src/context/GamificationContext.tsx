@@ -25,6 +25,7 @@ interface GamificationContextType {
     achievements: Achievement[];
     userProgress: UserProgress;
     loading: boolean;
+    isDailyClaimed: boolean;
     checkAchievement: (id: string) => Promise<void>;
     claimDailyReward: () => Promise<{ success: boolean; streak: number; reward: number }>;
 }
@@ -42,6 +43,7 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
     const [userProgress, setUserProgress] = useState<UserProgress>({
         xp: 0, level: 1, nextLevelXp: LEVEL_base_XP, progressPercent: 0
     });
+    const [isDailyClaimed, setIsDailyClaimed] = useState(false);
     const [loading, setLoading] = useState(false);
 
     // Calculate level metrics
@@ -49,7 +51,7 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
         const currentLevelBase = (level - 1) * LEVEL_base_XP;
         const nextLevelThreshold = level * LEVEL_base_XP;
         const xpInLevel = xp - currentLevelBase;
-        const requiredInLevel = LEVEL_base_XP; // Linear for now
+        const requiredInLevel = LEVEL_base_XP;
         const percent = Math.min(100, Math.max(0, (xpInLevel / requiredInLevel) * 100));
 
         return {
@@ -63,21 +65,27 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
     const fetchData = useCallback(async () => {
         if (!user?.id) return;
         
-        // Non-critical data delay
-        await new Promise(resolve => setTimeout(resolve, 800));
-        
         setLoading(true);
         try {
-            // Parallel fetch: Achievements, Unlocks, and User Stats
-            const [achResult, unlockResult, userResult] = await Promise.all([
+            const today = new Date().toISOString().split('T')[0];
+
+            // Parallel fetch: Achievements, Unlocks, User Stats, and Daily Streak
+            const [achResult, unlockResult, userResult, streakResult] = await Promise.all([
                 supabase.from('achievements').select('*'),
                 supabase.from('user_achievements').select('achievement_id, unlocked_at').eq('user_id', user.id),
-                supabase.from('app_users').select('xp, level').eq('id', user.id).maybeSingle()
+                supabase.from('app_users').select('xp, level').eq('id', user.id).maybeSingle(),
+                supabase.from('daily_streaks').select('last_claim_date').eq('user_id', user.id).maybeSingle()
             ]);
 
             if (achResult.error) throw achResult.error;
-            if (unlockResult.error) throw unlockResult.error;
             
+            // Check daily claim
+            if (streakResult.data?.last_claim_date === today) {
+                setIsDailyClaimed(true);
+            } else {
+                setIsDailyClaimed(false);
+            }
+
             // Merge Data
             const unlocksMap = new Map(unlockResult.data?.map((u: any) => [u.achievement_id, u.unlocked_at]));
 
@@ -109,9 +117,6 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
         // Check if already unlocked
         if (achievements.find(a => a.id === achievementId && a.unlocked_at)) return;
 
-        // Verify condition matches? (Client side check mostly for immediate feedback, real check should be server side)
-        // For this MVP we trust logic triggering this call
-
         try {
             // Unlock
             const { error } = await supabase
@@ -119,7 +124,6 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
                 .insert({ user_id: user.id, achievement_id: achievementId });
 
             if (error) {
-                // Ignore duplicate key error
                 if (error.code === '23505') return;
                 throw error;
             }
@@ -129,10 +133,6 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
             const reward = ach?.xp_reward || 0;
 
             if (reward > 0) {
-                // Update XP
-                // Note: Ideally use a stored procedure to increment atomically
-                // Creating a simple RPC call would be better.
-                // For now, client-side increment logic (risky but okay for MVP)
                 const newXp = userProgress.xp + reward;
                 const newLevel = Math.floor(newXp / LEVEL_base_XP) + 1;
 
@@ -162,10 +162,9 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
     };
 
     const claimDailyReward = async () => {
-        if (!user) return { success: false, streak: 0, reward: 0 };
+        if (!user || isDailyClaimed) return { success: false, streak: 0, reward: 0 };
 
         try {
-            // Check today
             const today = new Date().toISOString().split('T')[0];
 
             // Get current streak
@@ -176,6 +175,7 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
                 .maybeSingle();
 
             if (streakData && streakData.last_claim_date === today) {
+                setIsDailyClaimed(true);
                 return { success: false, streak: streakData.current_streak, reward: 0 };
             }
 
@@ -191,8 +191,8 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
                 }
             }
 
-            // Reward logic (Base 10 + Streak * 5)
-            const reward = 10 + (Math.min(newStreak, 7) * 5); // Cap bonus at 7 days
+            // Reward logic
+            const reward = 10 + (Math.min(newStreak, 7) * 5);
 
             // Upsert Streak
             await supabase
@@ -214,8 +214,7 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
                 .eq('id', user.id);
 
             setUserProgress(calculateProgress(newXp, newLevel));
-
-            setUserProgress(calculateProgress(newXp, newLevel));
+            setIsDailyClaimed(true);
 
             vibrate('success');
             addNotification({
@@ -237,6 +236,7 @@ export const GamificationProvider = ({ children }: { children: React.ReactNode }
             achievements,
             userProgress,
             loading,
+            isDailyClaimed,
             checkAchievement,
             claimDailyReward
         }}>
