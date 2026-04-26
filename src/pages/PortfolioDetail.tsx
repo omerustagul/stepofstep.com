@@ -44,7 +44,7 @@ const PortfolioDetail = () => {
                         >
                             <div className="flex flex-wrap gap-2 mb-4">
                                 {((Array.isArray(portfolio.serviceType) ? portfolio.serviceType : (portfolio.serviceType ? [portfolio.serviceType] : (portfolio.category ? [portfolio.category] : []))) as string[]).map((cat, i) => (
-                                    <span key={i} className="px-4 py-1.5 bg-orange-500 text-white text-[10px] font-black uppercase tracking-wider rounded-full shadow-lg border border-orange-400/50">
+                                    <span key={i} className="px-4 py-1.5 bg-orange-500 text-white text-[10px] font-black rounded-full shadow-lg border border-orange-400/50">
                                         {cat}
                                     </span>
                                 ))}

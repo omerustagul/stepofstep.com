@@ -138,10 +138,26 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
         const root = document.documentElement;
         root.setAttribute('data-theme', effectiveTheme);
 
-        // Also update meta theme-color for mobile browsers
-        const metaTheme = document.querySelector('meta[name="theme-color"]');
-        if (metaTheme) {
-            metaTheme.setAttribute('content', effectiveTheme === 'dark' ? '#09090b' : '#ffffff');
+        // Update ALL meta theme-color tags for mobile browsers
+        const metaThemes = document.querySelectorAll('meta[name="theme-color"]');
+        const themeColor = effectiveTheme === 'dark' ? '#09090b' : '#ffffff';
+        
+        if (metaThemes.length > 0) {
+            metaThemes.forEach(meta => {
+                meta.setAttribute('content', themeColor);
+            });
+        } else {
+            // Create one if it doesn't exist
+            const meta = document.createElement('meta');
+            meta.name = 'theme-color';
+            meta.content = themeColor;
+            document.head.appendChild(meta);
+        }
+
+        // Fix for iOS Safari status bar style
+        const appleStatus = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+        if (appleStatus) {
+            appleStatus.setAttribute('content', effectiveTheme === 'dark' ? 'black-translucent' : 'default');
         }
     }, [effectiveTheme]);
 
